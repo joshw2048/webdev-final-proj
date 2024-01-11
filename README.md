@@ -1,3 +1,5 @@
+This repo is for cs4550 - webdev. 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
