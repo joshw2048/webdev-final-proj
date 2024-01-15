@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Edit Assignment Content</title>
+  </head>
+  <body>
+    <select id="edit-select">
+      <option selected value="SPEED">SpeedGrader</option>
+    </select>
+    <hr>
+    <h2>Assignment Name</h2>
+    <form id="edit-assignment-form">
+      <input value="A1 - ENV + HTML" /><br /><br />
+      <textarea cols="20" rows="4">This is the assignment description.</textarea><br /><br />
+
+      <label for="points">Points</label><br/>
+      <input type="number" id="points" value="100"/><br /><br />
+
+      <label for="assignment-group">Assignment Group </label><br/>
+      <select id="assignment-group">
+        <option selected value="ASSIGNMENTS">ASSIGNMENTS</option>
+      </select><br /><br />
+
+      <label for="display-grade">Display Grade as </label><br/>
+      <select id="display-grade">
+        <option selected value="PERCENT">Percentage</option>
+        <option value="NUMBER">Number</option>
+        <option value="DECIMAL">Decimal</option>
+      </select><br /><br />
+
+      <label for="submission-type">Submission Type </label><br/>
+      <select id="submission-type">
+        <option value="ONLINE">Online</option>
+      </select><br /><br />
+
+      <label>Online Entry Options</label>
+      <br/>
+      <input type="checkbox" value="TEXT"
+            name="check-genre" id="chkbox-text" checked/>
+      <label for="chkbox-text">Text Entry</label> <br/>
+      <input type="checkbox" value="WEBSITE"
+            name="check-genre" id="chkbox-website"/>
+      <label for="chkbox-website">Website URL</label> <br/>
+      <input type="checkbox" value="MEDIA"
+            name="check-genre" id="chkbox-media" />
+      <label for="chkbox-media">Media Recordings</label> <br/>
+      <input type="checkbox" value="STUDENT"
+            name="check-genre" id="chkbox-student-annotation"/>
+      <label for="chkbox-student-annotation">Student Annotation</label> <br />
+      <input type="checkbox" value="FILE"
+            name="check-genre" id="chkbox-file" />
+      <label for="chkbox-file">File Uploads</label> <br/><br />
+
+      Assign<br/>
+      <label for="text-field-assign-to">Assign to</label><br/>
+      <input id="text-field-assign-to" value="Everyone"/><br/><br/>
+
+      <label for="text-fields-due">Due </label><br/>
+      <input type="date"
+            id="text-fields-due"
+            value="2024-01-01"/><br/><br />
+
+      <label for="text-fields-available"> Available from </label><br/>
+      <input type="date"
+            id="text-fields-available"
+            value="2024-01-01"/><br/><br />
+
+      <label for="text-fields-until">Until </label><br/>
+      <input type="date"
+            id="text-fields-until"
+            value="2024-01-21"/><br/><br />
+
+      <div>
+        <button>Cancel</button>
+        <button>Save</button>
+      </div>
+    </form>
+  </body>
+</html>
