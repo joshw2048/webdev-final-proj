@@ -110,3 +110,58 @@
   justify-content: space-between;
   margin-top: 15px;
 }
+
+.bottom-content-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.hamburger-nav {
+  min-height: 40px;
+  border-bottom: 1px solid rgba(102, 102, 102, 0.125);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-navigation {
+  width: 100%;  
+  list-style: none;
+  padding: 0px;
+  margin: 20px;
+  height: 100vh;
+}
+
+.toggle-navigation > li {  
+  margin-bottom: 10px;
+  font-size: 0.8em;  
+}
+
+.icon-button {
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .hamburger-nav {
+    background-color: black;
+    color: white;
+  }
+
+  .hamburger-nav > button {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .hamburger-nav{
+  
+  }
+
+  .collapse {
+    display: none;
+  }
+
+  .hide-large {
+    display: none;
+  }
+}
