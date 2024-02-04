@@ -161,4 +161,8 @@
   .hide-large {
     display: none;
   }
+
+  .icon-button {
+    display: none;
+  }
 }
