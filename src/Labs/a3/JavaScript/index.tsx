@@ -1,6 +1,11 @@
 import BooleanVariables from "./variables/BooleanVariables";
+import Destructing from "./json/Destructing";
+import FunctionDestructing from "./functions/FunctionDestructing";
+import House from "./json/House";
 import IfElse from "./conditionals/IfElse";
 import JsonStringify from "./json/JsonStringify";
+import Spreading from "./json/Spreading";
+import TemplateLiterals from "./string/TemplateLiterals";
 import TernaryOperator from "./conditionals/TernaryOperator";
 import VariablesAndConstants from "./variables/VariablesAndConstants";
 import VariableTypes from "./variables/VariableTypes";
@@ -20,6 +25,11 @@ function JavaScript() {
         <WorkingWithFunctions />
         <WorkingWithArrays />
         <JsonStringify />
+        <TemplateLiterals />
+        <House />
+        <Spreading />
+        <Destructing />
+        <FunctionDestructing />
      </div>
   );
 }
