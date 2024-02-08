@@ -6,6 +6,18 @@
   padding: 0px;
 }
 
+.collapse-nav {
+  width: 100%;
+}
+
+.collapse-nav > li > i {
+  color: red;
+}
+
+#grey-icon {
+  color: grey;
+}
+
 .wd-modules {
   margin: 5px;
 }
