@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Grades Screen</title>
+  </head>
+  <body>
+    <table>
+      <tbody>
+        <td style="vertical-align:top;">
+          <ul style="margin-top:0; padding-top:0;">
+            <li><a href="/Kanbas/Account/Profile/screen.html">Account</a></li>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="/Kanbas/Courses/Home/screen.html">Courses</a></li>
+            <li><a href="#">Calendar</a></li>
+            <li><a href="#">Inbox</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Studio</a></li>
+            <li><a href="#">Commons</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>  
+        </td>
+        <td style="vertical-align:top;">
+          <ul style="margin-top:0; margin-right: 20px; padding-top:0;">
+            <li><a href="/Kanbas/Courses/Home/screen.html">Home</a></li>
+            <li><a href="#">Modules</a></li>
+            <li><a href="#"> Piazza</a></li>
+            <li><a href="#">Zoom Meetings</a></li>
+            <li><a href="/Kanbas/Courses/Assignments/screen.html">Assignments</a></li>
+            <li><a href="#">Quizzes</a></li>
+            <li><a href="/Kanbas/Courses/Grades/screen.html">Grades</a></li>
+            <li><a href="#">People</a></li>
+            <li><a href="#">Panopto Video</a></li>
+            <li><a href="#">Discussions</a></li>
+            <li><a href="#">Announcements</a></li>
+            <li><a href="#">Pages</a></li>
+            <li><a href="#">Files</a></li>
+            <li><a href="#">Rubrics</a></li>
+            <li><a href="#">Outcomes</a></li>
+            <li><a href="#">Collaborations</a></li>
+            <li><a href="#">Syllabus</a></li>
+            <li><a href="#">Settings</a></li>
+          </ul>  
+        </td>
+        <td> 
+          <div>
+            <select id="gradebook">
+              <option selected value="GRADEBOOK">Gradebook</option>
+            </select>
+            <button>Import</button>
+            <select id="export">
+              <option selected value="EXPORT">export</option>
+            </select>
+            <button>Configure</button>
+          </div>
+          <h3>Student Names</h3>
+          <input type="text" id="search-students" placeholder="Search Students"/>
+          <h3>Assignment Names</h3>
+          <input type="text" id="search-assignments" placeholder="Search Assignments"/>
+          <br />
+          <button style="margin:19px 0px;">Apply Filters</button>
+      
+          <table border="1">
+            <thead>
+              <tr>    
+                <th>Student Name</th>
+                <th>A1 SETUP Out of 100</th>
+                <th>A2 HTML Out of 100</th>
+                <th>A3 CSS Out of 100</th>
+                <th>A4 BOOTSTRAP Out of 100</th>
+                <th>A5 JAVASCRIPT Out of 100</th>
+                <th>A6 React Out of 100</th>
+                <th>A7 REDUX Out of 100</th>
+                <th>A8 NODE Out of 100</th>
+                <th>A9 Mongo Out of 100</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- next assignment we can get rid of this explicit inline styling-->
+                <td>Alice Wonderland</td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><label contenteditable="true">89</label></td>
+                <td style="text-align: center;"><label contenteditable="true">87</label></td>
+                <td style="text-align: center;"><label contenteditable="true">90</label></td>
+                <td style="text-align: center;"><input style="width: 50%;" type="number" value="88"></td>
+                <td style="text-align: center;"><label contenteditable="true">94</label></td>
+                <td style="text-align: center;"><label contenteditable="true">88</label></td>
+                <td style="text-align: center;"><label contenteditable="true">87</label></td>
+                <td style="text-align: center;"><label contenteditable="true">100</label></td>
+              </tr>
+              <tr>
+                <td>Princess Leia</td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><input style="width: 50%;" type="number" value="99"></td>
+                <td style="text-align: center;"><label contenteditable="true">87</label></td>
+                <td style="text-align: center;"><label contenteditable="true">86</label></td>
+                <td style="text-align: center;"><label contenteditable="true">100</label></td>
+                <td style="text-align: center;"><label contenteditable="true">94</label></td>
+                <td style="text-align: center;"><label contenteditable="true">85</label></td>
+                <td style="text-align: center;"><label contenteditable="true">84</label></td>
+                <td style="text-align: center;"><label contenteditable="true">92</label></td>
+              </tr>
+              <tr>
+                <td>Luke Skywalker</td>
+                <td style="text-align: center;"><label contenteditable="true">99</label></td>
+                <td style="text-align: center;"><label contenteditable="true">88</label></td>
+                <td style="text-align: center;"><label contenteditable="true">82</label></td>
+                <td style="text-align: center;"><label contenteditable="true">96</label></td>
+                <td style="text-align: center;"><label contenteditable="true">85</label></td>
+                <td style="text-align: center;"><label contenteditable="true">86</label></td>
+                <td style="text-align: center;"><label contenteditable="true">80</label></td>
+                <td style="text-align: center;"><input style="width: 50%;" type="number" value="73"></td>
+                <td style="text-align: center;"><label contenteditable="true">84</label></td>
+              </tr>
+              <tr>
+                <td>Han Solo</td>
+                <td style="text-align: center;"><label contenteditable="true">83</label></td>
+                <td style="text-align: center;"><label contenteditable="true">99</label></td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><label contenteditable="true">94</label></td>
+                <td style="text-align: center;"><input style="width: 50%;" type="number" value="93"></td>
+                <td style="text-align: center;"><label contenteditable="true">92</label></td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><label contenteditable="true">92</label></td>
+                <td style="text-align: center;"><label contenteditable="true">95</label></td>
+              </tr>
+              <tr>
+                <td>C-3PO</td>
+                <td style="text-align: center;"><label contenteditable="true">83</label></td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><label contenteditable="true">100</label></td>
+                <td style="text-align: center;"><label contenteditable="true">83</label></td>
+                <td style="text-align: center;"><label contenteditable="true">83</label></td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><label contenteditable="true">96</label></td>
+                <td style="text-align: center;"><label contenteditable="true">96</label></td>
+                <td style="text-align: center;"><label contenteditable="true">87</label></td>
+              </tr>
+              <tr>
+                <td>Yoda</td>
+                <td style="text-align: center;"><input style="width: 50%;" type="number" value="92"></td>
+                <td style="text-align: center;"><label contenteditable="true">89</label></td>
+                <td style="text-align: center;"><label contenteditable="true">99</label></td>
+                <td style="text-align: center;"><label contenteditable="true">89</label></td>
+                <td style="text-align: center;"><label contenteditable="true">96</label></td>
+                <td style="text-align: center;"><label contenteditable="true">85</label></td>
+                <td style="text-align: center;"><label contenteditable="true">96</label></td>
+                <td style="text-align: center;"><label contenteditable="true">92</label></td>
+                <td style="text-align: center;"><label contenteditable="true">85</label></td>
+              </tr>
+              <tr>
+                <td>Admirable Ackbar</td>
+                <td style="text-align: center;"><label contenteditable="true">82</label></td>
+                <td style="text-align: center;"><label contenteditable="true">88</label></td>
+                <td style="text-align: center;"><label contenteditable="true">95</label></td>
+                <td style="text-align: center;"><label contenteditable="true">100</label></td>
+                <td style="text-align: center;"><label contenteditable="true">93</label></td>
+                <td style="text-align: center;"><label contenteditable="true">98</label></td>
+                <td style="text-align: center;"><label contenteditable="true">85</label></td>
+                <td style="text-align: center;"><input style="width: 50%;" type="number" value="100"></td>
+                <td style="text-align: center;"><label contenteditable="true">99</label></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tbody>
+    </table>
+  </body>
+</html>

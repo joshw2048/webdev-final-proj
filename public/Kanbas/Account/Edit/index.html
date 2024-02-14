@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Edit Profile Content</title>
+  </head>
+  <body>
+    <h2>Jose Annunziato</h2>
+
+    <form>
+      <label for="text-fields-name">Name:*</label>
+      <input id="text-fields-name" value="Jose Annunziato"/>
+      
+      <label for="select-pronouns">Pronouns:</label>
+      <select id="select-pronouns">
+        <option selected value="NONE">None</option>
+        <option value="SHE">She/Her</option>
+        <option value="HE">He/Him</option>
+        <option value="THEY">They/Them</option>
+        <option value="SHE-THEY">She/They</option>
+        <option value="HE-THEY">He/They</option>
+        <option value="OTHER">Other</option>
+      </select><br/><br/>
+      
+      <label for="text-fields-title">Tile:</label>
+      <input id="text-fields-title" /><br/>
+  
+      <h3>Contact</h3>
+      No registered services. You can add some on the <a href="#">settings</a> page.
+  
+      <h3>Contact</h3>
+      No registered services. You can add some on the <a href="#">settings</a> page.
+        
+      <h3>Biography</h3>
+      Faculty, Software Engineer, AI, Space, and renewables enthusiast.<br/>
+      <textarea cols="60" rows="4">Faculty, Software Engineer, AI, Space, and renewables enthusiast.</textarea>
+     
+      <!-- No icons needed for now @86-->
+      <h3>Links</h3>
+      <ul>
+        <li><a href="#">Youtube</a> Links to an external site.</li>
+      </ul>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</td>
+          <th>URL</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input value="Youtube"/>
+          </td>
+          <td>
+            <input value="https://www.youtube.com"/>
+          </td>
+          <td><a href="#">Remove</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <br/>
+
+    <button>Add another link</button>
+    <div>
+      <button>Cancel</button>
+      <a href="/Kanbas/Account/Profile/screen.html"><button>Save Profile</button></a>
+    </div>
+    <div>
+      <a href="/Kanbas/Account/Edit/screen.html"><button>Edit Profile</button></a>
+      <a href="/Kanbas/Account/Profile/screen.html"><button>Cancel Editing</button></a>
+    </div>
+  </body>
+</html>
