@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { courses } from "../Database";
+import { FaBook } from "react-icons/fa";
 
 interface Course {
   _id: string;
@@ -33,6 +34,7 @@ function Dashboard() {
                       {course.name} 
                     </span>
                     <p className="card-text">{course.description}</p>
+                    <FaBook />
                   </div>
                 </Link>
               </div>
