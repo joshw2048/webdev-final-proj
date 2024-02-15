@@ -1,16 +1,7 @@
 import { Link } from "react-router-dom";
 import { courses } from "../Database";
 import { FaBook } from "react-icons/fa";
-
-interface Course {
-  _id: string;
-  name: string;
-  number: string;
-  description?: string
-  startDate: string;
-  endDate: string;
-  image: string;
-}
+import { Course } from "../types";
 
 function Dashboard() {
   
