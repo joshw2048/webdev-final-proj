@@ -1,6 +1,11 @@
 .course-container {
   padding: 10px 20px;
-  > h1 {
-    color: red;
+  > h1 > span {
+    color: #C8102E;
   }
+}
+
+.course-content {
+  padding-top: 10px;
+  display: flex;
 }

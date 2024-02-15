@@ -19,14 +19,14 @@
   background-color: white;
 }
 .wd-kanbas-navigation li.wd-active a {
-  color: red;
+  color: #C8102E;
 }
 .wd-kanbas-navigation a {
   color: white;
   text-decoration: none;
 }
 .wd-kanbas-navigation a i {
-  color: red;
+  color: #C8102E;
   font-size: 2em;
   margin-bottom: 5px;
 }
@@ -38,7 +38,7 @@
 }
 
 .navigation-icon {
-  color: red;
+  color: #C8102E;
   font-size: 24px;
   margin-bottom: 5px;
 }
