@@ -5,7 +5,11 @@
   }
 }
 
-.course-content {
+.course-wrapper {
   padding-top: 10px;
   display: flex;
+}
+
+.course-content {
+  flex-grow: 1;
 }

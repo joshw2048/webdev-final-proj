@@ -4,6 +4,14 @@
   flex-grow: 1;
 }
 
+.module-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 .wd-modules,
 .wd-modules * {
   border-radius: 0%;
@@ -44,4 +52,28 @@
 .spacer-right {
   padding-left: 2px;
   padding-right: 20px;
+}
+
+.list-container {
+  width: 100%;
+}
+
+.top-content-container {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.module-button {
+  background-color: #C8102E !important;
+  color: white;
 }

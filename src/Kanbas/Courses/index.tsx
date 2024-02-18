@@ -25,9 +25,9 @@ function Courses() {
       <h1><span><HiMiniBars3 /> Course {course?.name}</span> <FaChevronRight /> {page}</h1>
       <hr id='grey' />
       <span>{course?.description}</span>
-      <div className='course-content'>
+      <div className='course-wrapper'>
         <CourseNavigation />
-        <div>
+        <div className='course-content'>
           <Routes>
             <Route path="/" element={<Navigate to="Home" />} />
             <Route path="Home" element={<h1>Home</h1>} />
