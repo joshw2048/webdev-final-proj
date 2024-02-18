@@ -44,5 +44,4 @@ export const ListItem = (props: { module: CourseModule }) => {
       )}
     </li>
   )
-
 }
