@@ -17,6 +17,7 @@ export const ListItem = (props: { module: CourseModule }) => {
   return (
     <li
       className="list-group-item list-header"
+      key={name}
       onClick={() => setOpen(!open)}>
       <div>
         <FaEllipsisV className="me-2" />
@@ -31,7 +32,7 @@ export const ListItem = (props: { module: CourseModule }) => {
       {open && (
         <ul className="list-group">
           {lessons ? lessons.map((lesson) => (
-            <li className="list-group-item">
+            <li className="list-group-item" key={lesson.name}>
               <FaEllipsisV className="me-2" />
               {lesson.name}
               <span className="float-end">

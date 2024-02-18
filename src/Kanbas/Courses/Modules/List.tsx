@@ -13,15 +13,15 @@ function ModuleList() {
         <button className="button">Collapse All</button>
         <button className="button">View Progress</button>
         <select className="select" id="select-publish">
-          <option selected value="ALL">Publish All</option>
+          <option value="ALL">Publish All</option>
         </select>
         <button className="module-button button"><FaPlus /> Modules</button>
       </div>
       <hr />
       {modulesList.length > 0 ? 
         <ul className="list-group wd-modules list-container">
-          {modulesList.map((module) => (
-            <ListItem module={module} />
+          {modulesList.map((module, index) => (
+            <ListItem key={index} module={module} />
           ))}
         </ul> 
       : <>No lessons found</>}

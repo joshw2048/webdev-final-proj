@@ -19,7 +19,6 @@ function Courses() {
   const { pathname } = useLocation();
   const pathArray = pathname.split('/');
   const page = pathArray[pathArray.length - 1];
-  console.log(page)
 
   return (
     <div className='course-container'>
