@@ -1,6 +1,6 @@
 import React from "react";
 import './index.css';
-import { FaCheckCircle, FaEllipsisV, FaPlusCircle } from "react-icons/fa";
+import { FaCheckCircle, FaEllipsisV, FaPlusCircle, FaPlus } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { assignments } from "../../Database";
 import { Assignment } from "../../types";
@@ -12,13 +12,16 @@ function Assignments() {
 
   return (
     <div className='assignments-container'>
-      {/* {<!-- Add buttons and other fields here -->} */}
-      <div className='top-button-container'>
-        <div>
-
+      <div className="top-content-container">
+        <input type="search" placeholder="Search for Assignment"/>
+        <div className="button-group">
+          <button className="button"><FaPlus /> Group</button>
+          <button className="module-button button"><FaPlus /> Assignment</button>
+          <button className="button"><FaEllipsisV /></button>
         </div>
       </div>
       <div className="assignments-wrapper">
+        <hr />
         <ul className="list-group wd-modules">
           <li className="list-group-item list-header">
             <div>
@@ -32,11 +35,27 @@ function Assignments() {
             <ul className="list-group">
               {assignmentList.map((assignment) => (
                 <li className="list-group-item">
-                  <FaEllipsisV className="me-2" />
-                  <Link
-                    to={`/Kanbas/Courses/${courseId}/Assignments/${assignment._id}`}>{assignment.title}</Link>
-                  <span className="float-end">
-                    <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" /></span>
+                  <div style={{ display: 'flex', alignItems: 'center',}}>
+                    <div className='assignment-item'>
+                      <FaEllipsisV className="me-2" />
+                      <div>
+                        <Link
+                          to={`/Kanbas/Courses/${courseId}/Assignments/${assignment._id}`}
+                        >
+                          {assignment.title}
+                        </Link>
+                        <div>
+                          <span style={{ color: '#C8102E' }}>Multiple Modules</span> 
+                          {assignment.availableDate && <span> | Not available until {assignment.availableDate.day} at {assignment.availableDate.time}</span>}
+                          <span> | Due {assignment.dueDate.day} at {assignment.dueDate.time} | {assignment.points} points </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <FaCheckCircle className="text-success" />
+                      <FaEllipsisV />
+                    </div>
+                  </div>
                 </li>))}
             </ul>
           </li>

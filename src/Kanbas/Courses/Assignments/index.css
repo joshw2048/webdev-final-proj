@@ -42,6 +42,7 @@
   display: flex;
   justify-content: space-between; */
   border: 1px solid rgba(0,0,0,.125);
+  width: 100%;
 }
 
 .list-container {
@@ -57,4 +58,28 @@
 
 .assignments-wrapper {
   margin: 0px 20px;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.module-button {
+  background-color: #C8102E !important;
+  color: white;
+}
+
+.top-content-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 25px;
+}
+
+.assignment-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }

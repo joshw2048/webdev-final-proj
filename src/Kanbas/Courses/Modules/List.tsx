@@ -1,6 +1,6 @@
 import "./index.css";
 import { modules } from "../../Database";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import { useParams } from "react-router";
 import { ListItem } from "./ListItem";
 
@@ -16,6 +16,7 @@ function ModuleList() {
           <option value="ALL">Publish All</option>
         </select>
         <button className="module-button button"><FaPlus /> Modules</button>
+        <button className="button"><FaEllipsisV /></button>
       </div>
       <hr />
       {modulesList.length > 0 ? 
