@@ -112,5 +112,83 @@
     "name": "Spacecraft Systems Engineering",
     "description": "Overview of spacecraft systems and subsystems engineering.",
     "course": "RS103"
+  },
+  {
+    "_id": "A101",
+    "name": "Introduction to HTML",
+    "description": "Basic principles of HTML.",
+    "course": "RS104",
+    "lessons": [
+      {
+        "_id": "L101",
+        "name": "History of HTML",
+        "description": "A brief history of HTML.",
+        "module": "A101"
+      },
+      {
+        "_id": "L102",
+        "name": "HTML Fundamentals",
+        "description": "Basic principles of HTML.",
+        "module": "A101"
+      },
+      {
+        "_id": "L103",
+        "name": "More on HTML",
+        "description": "Overview HTML.",
+        "module": "A101"
+      }
+    ]
+  },
+  {
+    "_id": "A102",
+    "name": "CSS",
+    "description": "Understanding CSS.",
+    "course": "RS104",
+    "lessons": [
+      {
+        "_id": "L201",
+        "name": "CSS",
+        "description": "Overview CSS.",
+        "module": "A102"
+      },
+      {
+        "_id": "L202",
+        "name": "Writing CSS",
+        "description": "Understanding CSS.",
+        "module": "A102"
+      },
+      {
+        "_id": "L203",
+        "name": "More on CSS",
+        "description": "Overview CSS.",
+        "module": "A102"
+      }
+    ]
+  },
+  {
+    "_id": "A103",
+    "name": "JavaScript",
+    "description": "Principles JavaScript",
+    "course": "RS104",
+    "lessons": [
+      {
+        "_id": "L301",
+        "name": "Javascript Design",
+        "description": "Overview of JavaScript",
+        "module": "A103"
+      },
+      {
+        "_id": "L302",
+        "name": "JavaScript Performance",
+        "description": "Understanding JavaScript.",
+        "module": "A103"
+      },
+      {
+        "_id": "L303",
+        "name": "JavaScript Optimization",
+        "description": "Optimizing JavaScript.",
+        "module": "A103"
+      }
+    ]
   }
 ]

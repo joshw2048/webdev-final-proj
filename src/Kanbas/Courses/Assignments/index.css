@@ -1,0 +1,60 @@
+
+.wd-modules,
+.wd-modules * {
+  border-radius: 0%;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.wd-modules {
+  margin: 5px;
+}
+
+.wd-modules > li {
+  /* background-color: lightgray;
+  border: 1px solid gray !important; */
+  border-left: none !important;
+}
+
+.wd-modules > li > div {
+  padding: 6px;
+  /* border-left: 1px solid gray !important; */
+}
+
+.wd-modules > li > ul > li {
+  padding: 5px;
+  /* border-top: 1px solid gray !important; */
+  border-left: 2px solid green;
+}
+
+.wd-modules > li {
+  margin-bottom: 20px;
+}
+
+.list-header {
+  background-color: lightgray;
+}
+
+.list-group-item {
+  /* list-style-type: none;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; */
+  border: 1px solid rgba(0,0,0,.125);
+}
+
+.list-container {
+  width: 100%;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.assignments-wrapper {
+  margin: 0px 20px;
+}
