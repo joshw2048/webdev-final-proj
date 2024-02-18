@@ -28,6 +28,7 @@ function Assignments() {
               <FaEllipsisV className="me-2" /> 
               ASSIGNMENTS
               <span className="float-end">
+                <span className='percent-value'>40% of Total</span>
                 <FaCheckCircle className="text-success" />
                 <FaPlusCircle className="ms-2" /><FaEllipsisV className="ms-2" />
               </span>
