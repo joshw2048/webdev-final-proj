@@ -17,6 +17,7 @@ function ModuleList() {
         </select>
         <button className="module-button button"><FaPlus /> Modules</button>
       </div>
+      <hr />
       {modulesList.length > 0 ? 
         <ul className="list-group wd-modules list-container">
           {modulesList.map((module) => (

@@ -1,0 +1,44 @@
+a:link {
+  text-decoration: none;
+}
+
+.course-list {
+  list-style-type: none;
+  background-color: rgb(233, 232, 232);
+  margin: 2px;
+  padding: 4px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.home-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.published-button {
+  background-color: rgb(140, 177, 140);
+  color: white;
+}
+
+.heading-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.todo-list {
+  list-style-type: none; 
+  margin-left: -20px;
+}
+
+.dark-gray {
+  color: darkgray;
+}
