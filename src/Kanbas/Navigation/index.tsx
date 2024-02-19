@@ -12,7 +12,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 
-const links = [
+export const links = [
   { label: "Account",   icon: <FaRegUserCircle className="fs-2 account-icon" />  },
   { label: "Dashboard", icon: <FaTachometerAlt className="fs-2 navigation-icon" />  },
   { label: "Courses",   icon: <FaBook className="fs-2 navigation-icon" />           },

@@ -37,10 +37,6 @@
 }
 
 .list-group-item {
-  /* list-style-type: none;
-  width: 100%;
-  display: flex;
-  justify-content: space-between; */
   border: 1px solid rgba(0,0,0,.125);
   width: 100%;
 }
@@ -72,7 +68,7 @@
   color: white;
 }
 
-.top-content-container {
+.top-content {
   display: flex;
   justify-content: space-between;
   padding: 0px 25px;

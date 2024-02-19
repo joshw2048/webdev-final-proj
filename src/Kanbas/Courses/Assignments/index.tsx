@@ -12,7 +12,7 @@ function Assignments() {
 
   return (
     <div className='assignments-container'>
-      <div className="top-content-container">
+      <div className="top-content">
         <input type="search" placeholder="Search for Assignment"/>
         <div className="button-group">
           <button className="button"><FaPlus /> Group</button>
@@ -34,8 +34,8 @@ function Assignments() {
               </span>
             </div>
             <ul className="list-group">
-              {assignmentList.map((assignment) => (
-                <li className="list-group-item">
+              {assignmentList.map((assignment, index) => (
+                <li key={index} className="list-group-item">
                   <div style={{ display: 'flex', alignItems: 'center',}}>
                     <div className='assignment-item'>
                       <FaEllipsisV className="me-2" />

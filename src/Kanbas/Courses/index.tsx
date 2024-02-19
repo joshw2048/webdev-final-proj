@@ -1,5 +1,6 @@
 import './index.css';
 import { courses } from "../../Kanbas/Database";
+import { useState, useEffect } from 'react';
 import { 
   Navigate, 
   Route, 
@@ -15,19 +16,31 @@ import Home from "./Home";
 import Assignments from "./Assignments";
 
 function Courses() {
+  // could also make custom react hook for this
   const { courseId } = useParams();
   const course = courses.find((course) => course._id === courseId);
   const { pathname } = useLocation();
   const pathArray = pathname.split('/');
   const page = pathArray[pathArray.length - 1];
 
+  // could make custom react hook for this
+  const [largeScreen, setLargeScreen] = useState(
+    window.matchMedia("(min-width: 768px)").matches
+  )
+
+  useEffect(() => {
+    window
+    .matchMedia("(min-width: 768px)")
+    .addEventListener('change', e => setLargeScreen( e.matches ));
+  }, []);
+
   return (
     <div className='course-container'>
-      <h1><span><HiMiniBars3 /> Course {course?.name}</span> <FaChevronRight /> {page}</h1>
-      <hr id='grey' />
+      {largeScreen && <h1><span><HiMiniBars3 /> Course {course?.name}</span> <FaChevronRight /> {page}</h1> }
+      {largeScreen && <hr id='grey' /> }
       <span>{course?.description}</span>
       <div className='course-wrapper'>
-        <CourseNavigation />
+        {largeScreen && <CourseNavigation /> }
         <div className='course-content'>
           <Routes>
             <Route path="/" element={<Navigate to="Home" />} />
