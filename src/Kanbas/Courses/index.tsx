@@ -16,14 +16,17 @@ import Home from "./Home";
 import Assignments from "./Assignments";
 
 function Courses() {
-  // could also make custom react hook for this
   const { courseId } = useParams();
   const course = courses.find((course) => course._id === courseId);
   const { pathname } = useLocation();
   const pathArray = pathname.split('/');
   const page = pathArray[pathArray.length - 1];
 
-  // could make custom react hook for this
+  /**
+   * This code to check media queries comes from stackoverflow: https://stackoverflow.com/questions/54491645/media-query-syntax-for-reactjs
+   * It makes use of two React Hooks, useState and useEffect, in order to determine when the window is resized and hits a certain
+   * breakpoint. This code is being used to determine when to show the breadcrumb menu vs the general menu.
+   */
   const [largeScreen, setLargeScreen] = useState(
     window.matchMedia("(min-width: 768px)").matches
   )
