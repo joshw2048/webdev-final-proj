@@ -4,32 +4,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Courses from "./Courses";
 import { SmallNav } from "./Navigation/SmallNav";
+import { useMediumMediaQueryBreakpoint } from "./hooks/useMediumMediaQueryBreakpoint";
 
 function Kanbas() {
-  /**
-   * This code that functions as a media query breakpoint comes from stackoverflow: https://stackoverflow.com/questions/54491645/media-query-syntax-for-reactjs
-   * from Marcos Guerrero
-   * It makes use of two React Hooks, useState and useEffect, in order to determine when the window is resized and hits a certain
-   * breakpoint. This code is being used to determine when to show the breadcrumb menu vs the general menu.
-   * 
-   * I changed variable names to make more sense with my needs, but the functionality is mainly the same.
-   */
-  const [largeScreen, setLargeScreen] = useState(
-    window.matchMedia("(min-width: 768px)").matches
-  )
-
-  useEffect(() => {
-    window
-    .matchMedia("(min-width: 768px)")
-    .addEventListener('change', e => setLargeScreen( e.matches ));
-  }, []);
+  const isLargeScreen = useMediumMediaQueryBreakpoint();
 
   return (
     <>
-      {!largeScreen && <SmallNav />}  
+      {!isLargeScreen && <SmallNav />}  
       <div className="d-flex">
         <div>
-          {largeScreen && <KanbasNavigation />}
+          {isLargeScreen && <KanbasNavigation />}
         </div>
         <div style={{ flexGrow: 1 }}>
           <Routes>

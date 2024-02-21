@@ -14,6 +14,7 @@ import CourseNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
+import { useMediumMediaQueryBreakpoint } from '../hooks/useMediumMediaQueryBreakpoint';
 
 function Courses() {
   const { courseId } = useParams();
@@ -21,32 +22,15 @@ function Courses() {
   const { pathname } = useLocation();
   const pathArray = pathname.split('/');
   const page = pathArray[pathArray.length - 1];
-
-  /**
-   * This code that functions as a media query breakpoint comes from stackoverflow: https://stackoverflow.com/questions/54491645/media-query-syntax-for-reactjs
-   * from Marcos Guerrero
-   * It makes use of two React Hooks, useState and useEffect, in order to determine when the window is resized and hits a certain
-   * breakpoint. This code is being used to determine when to show the breadcrumb menu vs the general menu.
-   * 
-   * I changed variable names to make more sense with my needs, but the functionality is mainly the same.
-   */
-  const [largeScreen, setLargeScreen] = useState(
-    window.matchMedia("(min-width: 768px)").matches
-  )
-
-  useEffect(() => {
-    window
-    .matchMedia("(min-width: 768px)")
-    .addEventListener('change', e => setLargeScreen( e.matches ));
-  }, []);
+  const isLargeScreen = useMediumMediaQueryBreakpoint();
 
   return (
     <div className='course-container'>
-      {largeScreen && <h1><span><HiMiniBars3 /> Course {course?.name}</span> <FaChevronRight /> {page}</h1> }
-      {largeScreen && <hr id='grey' /> }
+      {isLargeScreen && <h1><span><HiMiniBars3 /> Course {course?.name}</span> <FaChevronRight /> {page}</h1> }
+      {isLargeScreen && <hr id='grey' /> }
       <span>{course?.description}</span>
       <div className='course-wrapper'>
-        {largeScreen && <CourseNavigation /> }
+        {isLargeScreen && <CourseNavigation /> }
         <div className='course-content'>
           <Routes>
             <Route path="/" element={<Navigate to="Home" />} />
