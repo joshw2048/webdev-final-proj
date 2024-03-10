@@ -1,5 +1,4 @@
 import './index.css';
-import { courses } from "../../Kanbas/Database";
 import { useState, useEffect } from 'react';
 import { 
   Navigate, 
@@ -15,8 +14,9 @@ import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import { useMediumMediaQueryBreakpoint } from '../hooks/useMediumMediaQueryBreakpoint';
+import { Course } from '../types';
 
-function Courses() {
+function Courses({ courses }: { courses: Course[]; }) {
   const { courseId } = useParams();
   const course = courses.find((course) => course._id === courseId);
   const { pathname } = useLocation();

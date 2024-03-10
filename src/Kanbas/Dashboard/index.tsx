@@ -1,43 +1,15 @@
 import './index.css';
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { courses as dataCourses} from "../Database";
 import { FaBook } from "react-icons/fa";
 import { Course } from "../types";
 
-function Dashboard() {
-  const [courses, setCourses] = useState<Course[]>(dataCourses);
-  const [course, setCourse] = useState<Course>({
-    _id: "0", 
-    name: "New Course", 
-    number: "New Number",
-    startDate: "2023-09-10", 
-    endDate: "2023-12-15",
-    image: "teslabot.jpg"
-  });
-
-  const updateCourse = () => {
-    setCourses(
-      courses.map((c) => {
-        if (c._id === course._id) {
-          return course;
-        } else {
-          return c;
-        }
-      })
-    );
-  };
-
-  const deleteCourse = (courseId: string) => {
-    setCourses(courses.filter((course) => course._id !== courseId));
-  };
-
-  const addNewCourse = () => {
-    const newCourse = { ...course,
-                        _id: new Date().getTime().toString() };
-    setCourses([...courses, { ...course, ...newCourse }]);
-  };
-
+function Dashboard(
+  { courses, course, setCourse, addNewCourse,
+    deleteCourse, updateCourse }: {
+    courses: any[]; course: any; setCourse: (course: any) => void;
+    addNewCourse: () => void; deleteCourse: (course: any) => void;
+    updateCourse: () => void; }) {
+    
   return (
     <div className="p-4">
       <h1>Dashboard</h1>   
