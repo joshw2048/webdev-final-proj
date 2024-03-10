@@ -41,7 +41,8 @@ function Kanbas() {
   };
 
   return (
-    <Provider store={store}>
+    //<Provider store={store}>
+    <>
       {!isLargeScreen && <SmallNav />}  
       <div className="d-flex">
         <div>
@@ -65,7 +66,7 @@ function Kanbas() {
           </Routes>
         </div>
       </div>
-    </Provider>
+    </>//</Provider>
   );
 }
 

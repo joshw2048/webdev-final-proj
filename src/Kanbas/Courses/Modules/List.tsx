@@ -4,26 +4,55 @@ import { modules } from "../../Database";
 import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import { useParams } from "react-router";
 import { ListItem } from "./ListItem";
-import { CourseModule } from "../../types";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  addModule,
-  deleteModule,
-  updateModule,
-  setModule,
-} from "./reducer";
-import { KanbasState } from "../../store";
+import { Course, CourseModule } from "../../types";
+// import { useSelector, useDispatch } from "react-redux";
+// import {
+//   addModule,
+//   deleteModule,
+//   updateModule,
+//   setModule,
+// } from "./reducer";
+// import { KanbasState } from "../../store";
 
 function ModuleList() {
   const { courseId } = useParams();
-  const moduleList = useSelector((state: KanbasState) => state.modulesReducer.modules);
-  const module = useSelector((state: KanbasState) => 
-    state.modulesReducer.module);
-  const dispatch = useDispatch();
+  const [moduleList, setModuleList] = useState<CourseModule[]>(modules);
+
+  const [module, setModule] = useState<CourseModule>({
+    name: "New Module",
+    description: "New Description",
+    course: courseId ?? '',
+    _id: courseId + 'module' ?? '',
+  });
+
+  const addModule = (module: any) => {
+    const newModule = { ...module,
+      _id: new Date().getTime().toString() };
+    const newModuleList = [newModule, ...moduleList];
+    setModuleList(newModuleList);
+  };
+
+  const deleteModule = (moduleId: string) => {
+    const newModuleList = moduleList.filter(
+      (module) => module._id !== moduleId );
+    setModuleList(newModuleList);
+  };
+
+  const updateModule = () => {
+    const newModuleList = moduleList.map((m) => {
+      if (m._id === module._id) {
+        return module;
+      } else {
+        return m;
+      }
+    });
+    setModuleList(newModuleList);
+  };
+
   const modulesList = moduleList.filter((module) => module.course === courseId);
   
   console.log(moduleList, courseId, "\n\n")
-  console.log(modulesList)
+  console.log(modulesList, modulesList.length > 0)
 
   return (
     <div className="module-wrapper">
@@ -40,30 +69,27 @@ function ModuleList() {
       {modulesList.length > 0 ? 
         <ul className="list-group wd-modules list-container">
           <li className="list-group-item">
-            <button 
-              onClick={() => dispatch(addModule({ ...module, course: courseId }))}
-            >
-              Add
-            </button>
-            <button onClick={() => dispatch(updateModule(module))}>
-                Update
+            <button onClick={() => { addModule(module) }}>Add</button>
+            <button onClick={updateModule}>
+              Update
             </button>
             <input value={module.name}
-              onChange={(e) => dispatch(setModule({ ...module, name: e.target.value }))}
-
+              onChange={(e) => setModule({
+                ...module, name: e.target.value })}
             />
             <textarea value={module.description}
-              onChange={(e) => dispatch(setModule({ ...module, description: e.target.value }))
-            }
+              onChange={(e) => setModule({
+                ...module, description: e.target.value })}
             />
           </li>
+
 
           {modulesList.map((module, index) => (
             <ListItem 
               key={index} 
               module={module} 
-              deleteModule={dispatch(deleteModule(module._id))} 
-              updateModule={dispatch(setModule(module))}
+              deleteModule={deleteModule} 
+              updateModule={setModule}
             />
           ))}
         </ul> 
