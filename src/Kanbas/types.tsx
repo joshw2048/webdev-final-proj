@@ -1,7 +1,7 @@
 interface BaseCourse {
   _id: string;
   name: string;
-  description: string
+  description?: string
 }
 
 export interface Course extends BaseCourse {
