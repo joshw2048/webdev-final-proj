@@ -6,8 +6,9 @@ import Courses from "./Courses";
 import { SmallNav } from "./Navigation/SmallNav";
 import { useMediumMediaQueryBreakpoint } from "./hooks/useMediumMediaQueryBreakpoint";
 import { courses as dbCourses } from "./Database";
-
 import { Course } from "./types" 
+import store from "./store";
+import { Provider } from "react-redux";
 
 function Kanbas() {
   const isLargeScreen = useMediumMediaQueryBreakpoint();
@@ -40,7 +41,7 @@ function Kanbas() {
   };
 
   return (
-    <>
+    <Provider store={store}>
       {!isLargeScreen && <SmallNav />}  
       <div className="d-flex">
         <div>
@@ -64,7 +65,7 @@ function Kanbas() {
           </Routes>
         </div>
       </div>
-    </>
+    </Provider>
   );
 }
 

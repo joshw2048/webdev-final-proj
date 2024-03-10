@@ -9,16 +9,32 @@ import {
 } from "react-icons/fa";
 import { CourseModule } from "../../types";
 
-export const ListItem = (props: { module: CourseModule }) => {
+interface Props {
+  module: CourseModule;
+  deleteModule: any;
+  updateModule: any;
+}
 
-  const { _id, name, lessons } = props.module;
+export const ListItem = (props: Props) => {
+  const { module, deleteModule, updateModule } = props;
+  const { name, lessons } = module;
   const [open, setOpen] = useState(true);
 
   return (
     <li
       className="list-group-item list-header"
       key={name}
-      onClick={() => setOpen(!open)}>
+      onClick={() => setOpen(!open)}
+    >
+      <button
+        onClick={() => deleteModule(module._id)}>
+        Delete
+      </button>
+      <button
+        onClick={() => { updateModule(module); }}>
+        Edit
+      </button>
+
       <div>
         <FaEllipsisV className="me-2" />
         {open ? <FaChevronDown className="me-2" /> : <FaChevronRight className="me-2" />}
