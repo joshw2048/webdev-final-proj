@@ -26,24 +26,27 @@ export const ListItem = (props: Props) => {
       key={name}
       onClick={() => setOpen(!open)}
     >
-      <button
-        onClick={() => deleteModule(module._id)}>
-        Delete
-      </button>
-      <button
-        onClick={() => { updateModule(module); }}>
-        Edit
-      </button>
-
-      <div>
-        <FaEllipsisV className="me-2" />
-        {open ? <FaChevronDown className="me-2" /> : <FaChevronRight className="me-2" />}
-        {name}
-        <span className="float-end">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <div>
+          <FaEllipsisV className="me-2" />
+          {open ? <FaChevronDown className="me-2" /> : <FaChevronRight className="me-2" />}
+          {name}
+        </div>
+        <div>
+          <button
+            className="button module-button"
+            onClick={() => deleteModule(module._id)}>
+            Delete
+          </button>
+          <button
+            className="button green-button"
+            onClick={() => { updateModule(module); }}>
+            Edit
+          </button>
           <FaCheckCircle className="text-success" />
           <FaPlusCircle className="ms-2" />
           <FaEllipsisV className="ms-2" />
-        </span>
+        </div>
       </div>
       {open && (
         <ul className="list-group">

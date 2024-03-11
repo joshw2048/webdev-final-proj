@@ -69,20 +69,25 @@ function ModuleList() {
       {modulesList.length > 0 ? 
         <ul className="list-group wd-modules list-container">
           <li className="list-group-item">
-            <button onClick={() => { addModule(module) }}>Add</button>
-            <button onClick={updateModule}>
-              Update
-            </button>
-            <input value={module.name}
-              onChange={(e) => setModule({
-                ...module, name: e.target.value })}
-            />
-            <textarea value={module.description}
-              onChange={(e) => setModule({
-                ...module, description: e.target.value })}
-            />
+            <div className="module-form">
+              <div className="textboxes">
+                <input className='inputbox' value={module.name}
+                  onChange={(e) => setModule({
+                    ...module, name: e.target.value })}
+                />
+                <textarea  className='inputbox' value={module.description}
+                  onChange={(e) => setModule({
+                    ...module, description: e.target.value })}
+                />
+              </div>
+              <div>
+                <button className="button green-button" onClick={() => { addModule(module) }}>Add</button>
+                <button className="button update-button" onClick={updateModule}>
+                  Update
+                </button>
+              </div>
+            </div>
           </li>
-
 
           {modulesList.map((module, index) => (
             <ListItem 

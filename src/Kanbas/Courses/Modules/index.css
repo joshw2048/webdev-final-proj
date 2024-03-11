@@ -81,3 +81,31 @@
   background-color: #C8102E !important;
   color: white;
 }
+
+.green-button {
+  background-color: green !important;
+  color: white;
+}
+
+.update-button {
+  background-color: blue !important;
+  color: white;
+}
+
+.module-form {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.textboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.inputbox {
+  border: 1px solid #000 !important;
+  min-width: 150px;
+}
