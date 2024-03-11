@@ -1,53 +1,27 @@
 import "./index.css";
-import { useState } from 'react';
-import { modules } from "../../Database";
+//import { useState } from 'react';
+//import { modules } from "../../Database";
 import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import { useParams } from "react-router";
 import { ListItem } from "./ListItem";
-import { Course, CourseModule } from "../../types";
-// import { useSelector, useDispatch } from "react-redux";
-// import {
-//   addModule,
-//   deleteModule,
-//   updateModule,
-//   setModule,
-// } from "./reducer";
-// import { KanbasState } from "../../store";
+//import { Course, CourseModule } from "../../types";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addModule,
+  deleteModule,
+  updateModule,
+  setModule,
+} from "./reducer";
+import { KanbasState } from "../../store";
 
 function ModuleList() {
   const { courseId } = useParams();
-  const [moduleList, setModuleList] = useState<CourseModule[]>(modules);
 
-  const [module, setModule] = useState<CourseModule>({
-    name: "New Module",
-    description: "New Description",
-    course: courseId ?? '',
-    _id: courseId + 'module' ?? '',
-  });
-
-  const addModule = (module: any) => {
-    const newModule = { ...module,
-      _id: new Date().getTime().toString() };
-    const newModuleList = [newModule, ...moduleList];
-    setModuleList(newModuleList);
-  };
-
-  const deleteModule = (moduleId: string) => {
-    const newModuleList = moduleList.filter(
-      (module) => module._id !== moduleId );
-    setModuleList(newModuleList);
-  };
-
-  const updateModule = () => {
-    const newModuleList = moduleList.map((m) => {
-      if (m._id === module._id) {
-        return module;
-      } else {
-        return m;
-      }
-    });
-    setModuleList(newModuleList);
-  };
+  const moduleList = useSelector((state: KanbasState) => 
+    state.modulesReducer.modules);
+  const module = useSelector((state: KanbasState) => 
+    state.modulesReducer.module);
+  const dispatch = useDispatch();
 
   const modulesList = moduleList.filter((module) => module.course === courseId);
   
@@ -72,17 +46,27 @@ function ModuleList() {
             <div className="module-form">
               <div className="textboxes">
                 <input className='inputbox' value={module.name}
-                  onChange={(e) => setModule({
-                    ...module, name: e.target.value })}
-                />
+                  onChange={(e) =>
+                    dispatch(setModule({ ...module, name: e.target.value }))
+                  }
+                />        
                 <textarea  className='inputbox' value={module.description}
-                  onChange={(e) => setModule({
-                    ...module, description: e.target.value })}
+                  onChange={(e) =>
+                    dispatch(setModule({ ...module, description: e.target.value }))
+                  }
                 />
               </div>
               <div>
-                <button className="button green-button" onClick={() => { addModule(module) }}>Add</button>
-                <button className="button update-button" onClick={updateModule}>
+                <button 
+                  className="button green-button" 
+                  onClick={() => dispatch(addModule({ ...module, course: courseId }))}
+                >
+                  Add
+                </button>
+                <button 
+                  className="button update-button" 
+                  onClick={() => dispatch(updateModule(module))}
+                >
                   Update
                 </button>
               </div>
