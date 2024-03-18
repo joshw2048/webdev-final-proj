@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "App2.js", "lab5.js", "hello.js"  ]
 }
