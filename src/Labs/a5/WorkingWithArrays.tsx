@@ -17,15 +17,14 @@ function WorkingWithArrays() {
     setTodos(response.data);
   };
 
-  const removeTodo = async (todo: any) => {
-    const response = await axios
-      .get(`${API}/${todo.id}/delete`);
-    setTodos(response.data);
+  const deleteTodo = async (todo: any) => {
+    const response = await axios.delete(`${API}/${todo.id}`);
+    setTodos(todos.filter((t) => t.id !== todo.id));
   };
 
-  const createTodo = async () => {
-    const response = await axios.get(`${API}/create`);
-    setTodos(response.data ? response.data : todos);
+  const postTodo = async () => {
+    const response = await axios.post(API, todo);
+    setTodos([...todos, response.data]);
   };
 
   const fetchTodoById = async (id: number) => {
@@ -33,9 +32,9 @@ function WorkingWithArrays() {
     setTodo(response.data);
   };
 
-  const updateTitle = async () => {
-    const response = await axios.get(`${API}/${todo.id}/title/${todo.title}`);
-    setTodos(response.data);
+  const updateTodo = async () => {
+    const response = await axios.put(`${API}/${todo.id}`, todo);
+    setTodos(todos.map((t) => (t.id === todo.id ? todo : t)));
   };
 
   useEffect(() => {
@@ -56,11 +55,18 @@ function WorkingWithArrays() {
       <a href={`${API}/${todo.id}`}>
         Get Todo by ID
       </a><br />
-      <input type="text" value={todo.title}
-        onChange={(e) => setTodo({
-          ...todo, title: e.target.value })}/>
-      <h3>Updating an Item in an Array</h3>
-      <a href={`${API}/${todo.id}/title/${todo.title}`} >
+      <h3>Updating an Item in an Array</h3><br />
+      <p> These links no longer work, because we've removed the old endpoints in lab 3.5! See code for commented out verion</p>
+      <a href={`#`} >
+        Update Title to {todo.title}
+      </a> <br />
+      <a href={`#`} >
+        Update Completed to {todo.completed ? "true" : "false"}
+      </a><br />
+      <a href={`#`} >
+        Update Description to {todo.description}
+      </a>
+      {/* <a href={`${API}/${todo.id}/title/${todo.title}`} >
         Update Title to {todo.title}
       </a> <br />
       <a href={`${API}/${todo.id}/completed/${todo.completed}`} >
@@ -70,7 +76,7 @@ function WorkingWithArrays() {
         onChange={(e) => setTodo({ ...todo, completed: !todo.completed})}/> <br />
       <a href={`${API}/${todo.id}/description/${todo.description}`} >
         Update Description to {todo.description}
-      </a>
+      </a> */}
       <input type="text" 
         onChange={(e) => setTodo({ ...todo,
             description: e.target.value })}
@@ -87,22 +93,41 @@ function WorkingWithArrays() {
       <a href={`${API}/${todo.id}/delete`}>
         Delete Todo with ID = {todo.id}
       </a> <br /> <br />
-      <button onClick={createTodo} >
-        Create Todo
-      </button>
-      <button onClick={updateTitle} >
-        Update Title
+      <h3>Section 3.5 stuff, with axios and json</h3>
+      <input type="text" value={todo.title}
+        onChange={(e) => setTodo({
+          ...todo, title: e.target.value })}/><br />
+      <textarea value={todo.description} 
+        onChange={(e) => setTodo({ ...todo,
+          description: e.target.value })} /> <br />
+      <input value={todo.due} type="date"
+        onChange={(e) => setTodo({
+          ...todo, due: e.target.value })} /> <br />
+      <label>
+        <input checked={todo.completed} type="checkbox"
+          onChange={(e) => setTodo({
+            ...todo, completed: e.target.checked })} />
+        Completed
+      </label><br />
+      <button onClick={postTodo}> Post Todo </button>
+      <button onClick={updateTodo}>
+        Update Todo
       </button>
       <ul>
         {todos.map((todo: any) => (
           <li key={todo.id}>
-            <button onClick={() => removeTodo(todo)} >
-              Remove
+            <button onClick={() => deleteTodo(todo)}
+              className="btn btn-danger float-end ms-2">
+              Delete
             </button>
-            {todo.title}
             <button onClick={() => fetchTodoById(todo.id)} >
               Edit
             </button>
+            <input checked={todo.completed}
+              type="checkbox" readOnly />
+            {todo.title}
+            <p>{todo.description}</p>
+            <p>{todo.due}</p>
           </li>
         ))}
       </ul>
