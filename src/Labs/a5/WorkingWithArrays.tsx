@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function WorkingWithArrays() {
   const API = "http://localhost:4000/a5/todos";
@@ -9,6 +10,37 @@ function WorkingWithArrays() {
     due: "2021-09-09",
     completed: false,
   });
+
+  const [todos, setTodos] = useState<any[]>([]);
+  const fetchTodos = async () => {
+    const response = await axios.get(API);
+    setTodos(response.data);
+  };
+
+  const removeTodo = async (todo: any) => {
+    const response = await axios
+      .get(`${API}/${todo.id}/delete`);
+    setTodos(response.data);
+  };
+
+  const createTodo = async () => {
+    const response = await axios.get(`${API}/create`);
+    setTodos(response.data ? response.data : todos);
+  };
+
+  const fetchTodoById = async (id: number) => {
+    const response = await axios.get(`${API}/${id}`);
+    setTodo(response.data);
+  };
+
+  const updateTitle = async () => {
+    const response = await axios.get(`${API}/${todo.id}/title/${todo.title}`);
+    setTodos(response.data);
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   return (
     <div>
@@ -54,7 +86,26 @@ function WorkingWithArrays() {
       <h3>Deleting from an Array</h3>
       <a href={`${API}/${todo.id}/delete`}>
         Delete Todo with ID = {todo.id}
-      </a>
+      </a> <br /> <br />
+      <button onClick={createTodo} >
+        Create Todo
+      </button>
+      <button onClick={updateTitle} >
+        Update Title
+      </button>
+      <ul>
+        {todos.map((todo: any) => (
+          <li key={todo.id}>
+            <button onClick={() => removeTodo(todo)} >
+              Remove
+            </button>
+            {todo.title}
+            <button onClick={() => fetchTodoById(todo.id)} >
+              Edit
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
