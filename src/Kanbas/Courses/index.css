@@ -1,0 +1,15 @@
+.course-container {
+  padding: 10px 20px;
+  > h1 > span {
+    color: #C8102E;
+  }
+}
+
+.course-wrapper {
+  padding-top: 10px;
+  display: flex;
+}
+
+.course-content {
+  flex-grow: 1;
+}

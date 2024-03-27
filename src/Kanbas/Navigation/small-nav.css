@@ -1,0 +1,22 @@
+.toggle-navigation {
+  width: 100%;  
+  list-style: none;
+  padding: 0px;
+  margin: 20px;
+  height: 100vh;
+}
+
+.hamburger-nav {
+  min-height: 40px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(102, 102, 102, 0.125);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: black;
+  color: white;
+}
+
+.icon-button {
+  border: none;
+}

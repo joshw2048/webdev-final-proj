@@ -1,0 +1,83 @@
+.module-container {
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.module-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.wd-modules,
+.wd-modules * {
+  border-radius: 0%;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.wd-modules {
+  margin: 5px;
+}
+
+.wd-modules > li {
+  /* background-color: lightgray;
+  border: 1px solid gray !important; */
+  border-left: none !important;
+}
+
+.wd-modules > li > div {
+  padding: 6px;
+  /* border-left: 1px solid gray !important; */
+}
+
+.wd-modules > li > ul > li {
+  padding: 5px;
+  /* border-top: 1px solid gray !important; */
+  border-left: 2px solid green;
+}
+
+.wd-modules > li {
+  margin-bottom: 20px;
+}
+
+.list-header {
+  background-color: lightgray;
+}
+
+.list-group-item {
+  border: 1px solid rgba(0,0,0,.125);
+}
+
+.spacer-right {
+  padding-left: 2px;
+  padding-right: 20px;
+}
+
+.list-container {
+  width: 100%;
+}
+
+.top-content-container {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.module-button {
+  background-color: #C8102E !important;
+  color: white;
+}

@@ -1,0 +1,88 @@
+
+.wd-modules,
+.wd-modules * {
+  border-radius: 0%;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.wd-modules {
+  margin: 5px;
+}
+
+.wd-modules > li {
+  /* background-color: lightgray;
+  border: 1px solid gray !important; */
+  border-left: none !important;
+}
+
+.wd-modules > li > div {
+  padding: 6px;
+  /* border-left: 1px solid gray !important; */
+}
+
+.wd-modules > li > ul > li {
+  padding: 5px;
+  /* border-top: 1px solid gray !important; */
+  border-left: 2px solid green;
+}
+
+.wd-modules > li {
+  margin-bottom: 20px;
+}
+
+.list-header {
+  background-color: lightgray;
+}
+
+.list-group-item {
+  border: 1px solid rgba(0,0,0,.125);
+  width: 100%;
+}
+
+.list-container {
+  width: 100%;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.assignments-wrapper {
+  margin: 0px 20px;
+}
+
+.button {
+  background-color: lightgray;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid rgba(102, 102, 102, 0.125);
+}
+
+.module-button {
+  background-color: #C8102E !important;
+  color: white;
+}
+
+.top-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 25px;
+}
+
+.assignment-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.percent-value {
+  margin-right: 10px;
+  padding: 3px 12px;
+  border: 1px solid darkgray;
+  border-radius: 20px;
+}

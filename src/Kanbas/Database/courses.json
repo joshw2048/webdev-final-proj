@@ -1,0 +1,37 @@
+[ 
+  { "_id": "RS101", 
+    "name": "Rocket Propulsion", 
+    "number": "RS4550", 
+    "description": "AERO4560.19284.239375",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15", 
+    "image": "teslabot.jpg"  
+  },
+  { 
+    "_id": "RS102", 
+    "name": "Aerodynamics", 
+    "number": "RS4560", 
+    "description": "AERO4550.83929.481048",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15", 
+    "image": "teslabot.jpg"  
+  },
+  { 
+    "_id": "RS103", 
+    "name": "Spacecraft Design", 
+    "number": "RS4570", 
+    "description": "AERO4570.19302.184918",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15", 
+    "image": "teslabot.jpg" 
+  },
+  { 
+    "_id": "RS104", 
+    "name": "Web Development", 
+    "number": "RS4580", 
+    "description": "CS4550.39591.202430",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15", 
+    "image": "teslabot.jpg" 
+  }
+]
