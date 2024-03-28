@@ -33,7 +33,7 @@ function Dashboard(
       <h2>Published Courses (3)</h2> <hr />
       <div className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
-          {courses.map((course: Course) => (
+          {courses && courses?.map((course: Course) => (
             <div key={course._id} className="col" style={{ width: 300 }}>
               <div className="card" style={{ boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
                 <Link to={`/Kanbas/Courses/${course._id}/Home`} style={{ textDecoration: 'none' }}>
@@ -46,7 +46,7 @@ function Dashboard(
                     >
                       {course.name} 
                     </span>
-                    {course.description && <p className="card-text">{course.description}</p>}
+                    {course.subtext && <p className="card-text">{course.subtext}</p>}
                     <div className='course-button-container'>
                       <FaBook />
                       <div>

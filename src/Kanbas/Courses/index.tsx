@@ -1,5 +1,6 @@
 import './index.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { 
   Navigate, 
   Route, 
@@ -16,9 +17,19 @@ import Assignments from "./Assignments";
 import { useMediumMediaQueryBreakpoint } from '../hooks/useMediumMediaQueryBreakpoint';
 import { Course } from '../types';
 
-function Courses({ courses }: { courses: Course[]; }) {
+function Courses() {
   const { courseId } = useParams();
-  const course = courses.find((course) => course._id === courseId);
+  const COURSES_API = "http://localhost:4000/api/courses";
+  const [course, setCourse] = useState<any>({ _id: "" });
+  const findCourseById = async (courseId?: string) => {
+    const response = await axios.get(
+      `${COURSES_API}/${courseId}`
+    );
+    setCourse(response.data);
+  };
+  useEffect(() => {
+    findCourseById(courseId);
+  }, [courseId]);
   const { pathname } = useLocation();
   const pathArray = pathname.split('/');
   const page = pathArray[pathArray.length - 1];
