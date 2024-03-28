@@ -8,7 +8,10 @@ export interface Course extends BaseCourse {
   number: string;
   startDate: string;
   endDate: string;
-  image: string;
+  image?: string;
+  department?: string;
+  credits?: number;
+  author?: string;
 }
 
 export interface CourseModule extends BaseCourse {
@@ -35,4 +38,29 @@ export interface Assignment {
 interface AssignmentDate {
   day: string;
   time: string;
+}
+
+export interface Grade {
+  _id: string;
+  student: string;
+  assignment: string;
+  grade: string; // ?? why
+}
+
+export interface Enrollment {
+  _id: string;
+  user: string;
+  course: string;
+}
+
+type UserRole = "FACULTY" | "STUDENT";
+export interface User {
+  _id: string;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  role: UserRole;
 }
