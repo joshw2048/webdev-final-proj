@@ -1,5 +1,6 @@
 import "./index.css";
-//import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import * as client from "./client";
 //import { modules } from "../../Database";
 import { FaPlus, FaEllipsisV } from "react-icons/fa";
 import { useParams } from "react-router";
@@ -11,11 +12,18 @@ import {
   deleteModule,
   updateModule,
   setModule,
+  setModules,
 } from "./reducer";
 import { KanbasState } from "../../store";
 
 function ModuleList() {
   const { courseId } = useParams();
+  useEffect(() => {
+    client.findModulesForCourse(courseId)
+      .then((modules) =>
+        dispatch(setModules(modules))
+    );
+  }, [courseId]);
 
   const moduleList = useSelector((state: KanbasState) => 
     state.modulesReducer.modules);
@@ -25,8 +33,22 @@ function ModuleList() {
 
   const modulesList = moduleList.filter((module) => module.course === courseId);
   
-  console.log(moduleList, courseId, "\n\n")
-  console.log(modulesList, modulesList.length > 0)
+  const handleAddModule = () => {
+    client.createModule(courseId, module).then((module) => {
+      dispatch(addModule(module));
+    });
+  };
+
+  const handleDeleteModule = (moduleId: string | undefined) => {
+    client.deleteModule(moduleId).then((status) => {
+      dispatch(deleteModule(moduleId));
+    });
+  };
+
+  const handleUpdateModule = async () => {
+    const status = await client.updateModule(module);
+    dispatch(updateModule(module));
+  };
 
   return (
     <div className="module-wrapper">
@@ -59,13 +81,13 @@ function ModuleList() {
               <div>
                 <button 
                   className="button green-button" 
-                  onClick={() => dispatch(addModule({ ...module, course: courseId }))}
+                  onClick={handleAddModule}
                 >
                   Add
                 </button>
                 <button 
                   className="button update-button" 
-                  onClick={() => dispatch(updateModule(module))}
+                  onClick={handleUpdateModule}
                 >
                   Update
                 </button>
@@ -77,7 +99,7 @@ function ModuleList() {
             <ListItem 
               key={index} 
               module={module} 
-              deleteModule={deleteModule} 
+              deleteModule={handleDeleteModule} 
               updateModule={setModule}
             />
           ))}

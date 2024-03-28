@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 
 interface Props {
   module: CourseModule;
-  deleteModule: any;
+  deleteModule: (id: string | undefined) => void;
   updateModule: any;
 }
 
@@ -40,7 +40,7 @@ export const ListItem = (props: Props) => {
         <div>
           <button
             className="button module-button"
-            onClick={() => dispatch(deleteModule(module._id))}>
+            onClick={() => deleteModule(module._id)}>
             Delete
           </button>
           <button
