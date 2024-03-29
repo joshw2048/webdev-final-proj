@@ -1,6 +1,6 @@
 import './small-nav.css';
 import { useState } from 'react';
-import Database from "../../Kanbas/Database";
+import { courses } from "../../Kanbas/Database";
 import {
   useLocation,
   Link
@@ -49,7 +49,7 @@ export const SmallNav = () => {
   const pathArray = pathname.includes("Courses") ? pathname.split('/') : [];
   const courseId = pathArray.length > 0 ? pathArray[pathArray.length - 2] : undefined;
   const page = pathArray.length > 0 ? pathArray[pathArray.length - 1] : undefined;
-  const course = Database.courses.find((course) => course._id === courseId);
+  const course = courses.find((course) => course._id === courseId);
 
   const [navOpen, setNavOpen] = useState(false);
   const [courseNavOpen, setCourseNavOpen] = useState(false);

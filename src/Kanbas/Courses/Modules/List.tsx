@@ -62,39 +62,36 @@ function ModuleList() {
         <button className="button"><FaEllipsisV /></button>
       </div>
       <hr />
+      <div className="module-form">
+        <div className="textboxes">
+          <input className='inputbox' value={module.name}
+            onChange={(e) =>
+              dispatch(setModule({ ...module, name: e.target.value }))
+            }
+          />        
+          <textarea  className='inputbox' value={module.description}
+            onChange={(e) =>
+              dispatch(setModule({ ...module, description: e.target.value }))
+            }
+          />
+        </div>
+        <div>
+          <button 
+            className="button green-button" 
+            onClick={handleAddModule}
+          >
+            Add
+          </button>
+          <button 
+            className="button update-button" 
+            onClick={handleUpdateModule}
+          >
+            Update
+          </button>
+        </div>
+      </div>
       {modulesList.length > 0 ? 
         <ul className="list-group wd-modules list-container">
-          <li className="list-group-item">
-            <div className="module-form">
-              <div className="textboxes">
-                <input className='inputbox' value={module.name}
-                  onChange={(e) =>
-                    dispatch(setModule({ ...module, name: e.target.value }))
-                  }
-                />        
-                <textarea  className='inputbox' value={module.description}
-                  onChange={(e) =>
-                    dispatch(setModule({ ...module, description: e.target.value }))
-                  }
-                />
-              </div>
-              <div>
-                <button 
-                  className="button green-button" 
-                  onClick={handleAddModule}
-                >
-                  Add
-                </button>
-                <button 
-                  className="button update-button" 
-                  onClick={handleUpdateModule}
-                >
-                  Update
-                </button>
-              </div>
-            </div>
-          </li>
-
           {modulesList.map((module, index) => (
             <ListItem 
               key={index} 
