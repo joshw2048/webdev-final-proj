@@ -67,19 +67,27 @@ export default function UserTable() {
 
   return (
     <div>
-      <h1>User Table</h1>
-      <select
-        onChange={(e) => fetchUsersByRole(e.target.value)}
-        value={role || "USER"}
-        className="form-control w-25 float-end"
-      >
-        <option value="USER">User</option>
-        <option value="ADMIN">Admin</option>
-        <option value="FACULTY">Faculty</option>
-        <option value="STUDENT">Student</option>
-      </select>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px'}}>
+        <h1>User Table</h1>
+        <select
+          onChange={(e) => fetchUsersByRole(e.target.value)}
+          value={role || "USER"}
+          className="form-control w-25 float-end"
+        >
+          <option value="USER">User</option>
+          <option value="ADMIN">Admin</option>
+          <option value="FACULTY">Faculty</option>
+          <option value="STUDENT">Student</option>
+        </select>
+      </div>
       <table className="table">
         <thead>
+          <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Role</th>
+          </tr>
           <tr>
             <td>
               <input value={user.password} onChange={(e) =>

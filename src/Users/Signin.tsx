@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { User } from "./client";
+import "./index.css";
+
 import * as client from "./client";
 export default function Signin() {
   const [credentials, setCredentials] = useState<User>({ _id: "",
@@ -11,14 +13,16 @@ export default function Signin() {
     await client.signin(credentials);
     navigate("/Kanbas/Account/Profile");
   };
+
   return (
-    <div>
+    <div className="container">
       <h1>Signin</h1>
       <input value={credentials.username} onChange={(e) =>
         setCredentials({ ...credentials, username: e.target.value })}/>
       <input value={credentials.password} onChange={(e) =>
         setCredentials({ ...credentials, password: e.target.value })}/>
-      <button onClick={signin}> Signin </button>
+      <button className="btn btn-primary" onClick={signin}> Signin </button>
+      <Link to={"/Kanbas/Account/Signup"}>No account? Signup</Link>
     </div>
   );
 }
