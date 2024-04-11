@@ -8,7 +8,7 @@ export interface Course extends BaseCourse {
   number: string;
   startDate: string;
   endDate: string;
-  image: string;
+  image?: string;
   subtext?: string;
   department?: string;
   credits?: number;
