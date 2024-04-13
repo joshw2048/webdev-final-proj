@@ -10,13 +10,23 @@ export default function Profile() {
   const signout = async () => {
     await client.signout();
     navigate("/Kanbas/Account/Signin");
+    return;
   };
 
   const fetchProfile = async () => {
-    const account = await client.profile();
-    setProfile(account);
+    try {
+      const account = await client.profile();
+      setProfile(account);
+    } catch (errors: any) {
+      navigate("/Kanbas/Account/Signin");
+    }
   };
+
   const save = async () => {
+    if (profile.username === "" || profile.password === "" || profile.firstName === "" || profile.lastName === "") {
+      alert("Please enter all the necessary information");
+      return;
+    }
     await client.updateUser(profile);
   };
 
@@ -46,17 +56,17 @@ export default function Profile() {
             flexDirection: 'column',
             maxWidth: '500px'
           }}>
-            <input value={profile.username} onChange={(e) =>
+            <input placeholder="username" value={profile.username} onChange={(e) =>
               setProfile({ ...profile, username: e.target.value })}/>
-            <input value={profile.password} onChange={(e) =>
+            <input placeholder="password" value={profile.password} onChange={(e) =>
               setProfile({ ...profile, password: e.target.value })}/>
-            <input value={profile.firstName} onChange={(e) =>
+            <input placeholder="first name" value={profile.firstName} onChange={(e) =>
               setProfile({ ...profile, firstName: e.target.value })}/>
-            <input value={profile.lastName} onChange={(e) =>
+            <input placeholder="last name" value={profile.lastName} onChange={(e) =>
               setProfile({ ...profile, lastName: e.target.value })}/>
-            <input value={profile.dob} type="date" onChange={(e) =>
+            <input placeholder="date of birth" value={profile.dob} type="date" onChange={(e) =>
               setProfile({ ...profile, dob: e.target.value })}/>
-            <input value={profile.email} onChange={(e) =>
+            <input placeholder="email" value={profile.email} onChange={(e) =>
               setProfile({ ...profile, email: e.target.value })}/>
             <select onChange={(e) =>
                 setProfile({ ...profile, role: e.target.value })}>

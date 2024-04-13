@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { User } from "./client";
 import "./index.css";
@@ -8,11 +8,29 @@ export default function Signin() {
   const [credentials, setCredentials] = useState<User>({ _id: "",
     username: "", password: "", firstName: "", lastName: "", role: "USER"
   });
+
   const navigate = useNavigate();
   const signin = async () => {
+    if (credentials.username === "" || credentials.password === "") {
+      alert("please enter your username and password");
+      return;
+    }
     await client.signin(credentials);
     navigate("/Kanbas/Account/Profile");
   };
+
+  const fetchProfile = async () => {
+    try {
+      const account = await client.profile();
+      navigate("/Kanbas/Account/Profile");
+    } catch (errors: any) {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   return (
     <div className="container">
