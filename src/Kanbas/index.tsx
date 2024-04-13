@@ -12,6 +12,9 @@ import store from "./store";
 import { Provider } from "react-redux";
 
 const API_BASE = process.env.REACT_APP_API_BASE;
+const api = axios.create({
+  withCredentials: true
+});
 
 function Kanbas() {
   const isLargeScreen = useMediumMediaQueryBreakpoint();
@@ -19,7 +22,7 @@ function Kanbas() {
   const [courses, setCourses] = useState<Course[]>([]);
   const COURSES_API = `${API_BASE}/api/courses`;
   const findAllCourses = async () => {
-    const response = await axios.get(COURSES_API);
+    const response = await api.get(COURSES_API);
     setCourses(response.data);
   };
   useEffect(() => {
@@ -35,11 +38,11 @@ function Kanbas() {
     image: "teslabot.jpg"  
   });
   const addNewCourse = async () => {
-    const response = await axios.post(COURSES_API, course);
+    const response = await api.post(COURSES_API, course);
     setCourses([ ...courses, response.data ]);
   };
   const deleteCourse = async (courseId: string) => {
-    const response = await axios.delete(
+    const response = await api.delete(
       `${COURSES_API}/${courseId}`
     );
     setCourses(courses.filter(
@@ -47,7 +50,7 @@ function Kanbas() {
   };
 
   const updateCourse = async () => {
-    const response = await axios.put(
+    const response = await api.put(
       `${COURSES_API}/${course._id}`,
       course
     );

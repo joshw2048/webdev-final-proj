@@ -4,6 +4,10 @@ const API_BASE = process.env.REACT_APP_API_BASE;
 const COURSES_API = `${API_BASE}/api/courses`;
 const MODULES_API = `${API_BASE}/api/modules`;
 
+// const api = axios.create({
+//   withCredentials: true
+// });
+
 export const deleteModule = async (moduleId: string | undefined) => {
   const response = await axios
     .delete(`${MODULES_API}/${moduleId}`);
