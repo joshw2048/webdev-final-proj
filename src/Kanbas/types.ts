@@ -1,5 +1,6 @@
 interface BaseCourse {
   _id?: string;
+  id?: string; // ugh
   name: string;
   description?: string
 }

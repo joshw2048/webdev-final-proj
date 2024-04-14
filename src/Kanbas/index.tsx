@@ -30,7 +30,7 @@ function Kanbas() {
   }, []);
 
   const [course, setCourse] = useState<Course>({
-    _id: "1234", 
+    id: `1234`,
     name: "New Course", 
     number: "New Number",
     startDate: "2023-09-10", 
@@ -38,7 +38,7 @@ function Kanbas() {
     image: "teslabot.jpg"  
   });
   const addNewCourse = async () => {
-    const response = await api.post(COURSES_API, course);
+    const response = await api.post(COURSES_API, {...course, id: `${Math.random() * 1000000000}`});
     setCourses([ ...courses, response.data ]);
   };
   const deleteCourse = async (courseId: string) => {

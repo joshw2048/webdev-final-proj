@@ -34,7 +34,7 @@ function ModuleList() {
   const modulesList = moduleList.filter((module) => module.course === courseId);
   
   const handleAddModule = () => {
-    client.createModule(courseId, module).then((module) => {
+    client.createModule(courseId, {...module, id: `${Math.random() * 1000000000}`}).then((module) => {
       dispatch(addModule(module));
     });
   };
