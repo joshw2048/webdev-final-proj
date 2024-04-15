@@ -16,9 +16,11 @@ export interface BaseQuiz {
   dueDate: Date;
   availableDate: Date;
   untilDate: Date;
+  published: boolean;
 }
 
 type DefaultQuizOptions = Omit<BaseQuiz, "points" | "showCorrectAnswers" | "dueDate" | "availableDate" | "untilDate">;
+
 export const defaultQuizOptions: DefaultQuizOptions = {
   quizType: "Graded Quiz",
   assignmentGroup: "Quizzes",
@@ -29,6 +31,7 @@ export const defaultQuizOptions: DefaultQuizOptions = {
   oneQuestionAtTime: true,
   webcamRequired: false,
   lockQuestionsAfterAnswering: false,
+  published: false,
 }
 
 interface BaseQuestion {
@@ -55,5 +58,6 @@ export type Question = MultipleChoice | TrueFalse | FillInBlank;
 export interface Quiz extends BaseQuiz {
   _id?: string;
   name: string;
+  course: string;
   questions: Question[];
 }
