@@ -1,0 +1,1 @@
+export const translateBooleanToStringValue = (bool: boolean) => bool ? "Yes" : "No";
