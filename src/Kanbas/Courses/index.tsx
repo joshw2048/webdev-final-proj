@@ -1,6 +1,6 @@
 import './index.css';
-import { courses } from "../../Kanbas/Database";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { 
   Navigate, 
   Route, 
@@ -15,10 +15,25 @@ import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import { useMediumMediaQueryBreakpoint } from '../hooks/useMediumMediaQueryBreakpoint';
+import { Course } from '../types';
+import { QuizDetails } from '../../Quizzes/QuizDetails/QuizDetails';
+import { QuizList } from '../../Quizzes/QuizList/QuizList';
+
+const API_BASE = process.env.REACT_APP_API_BASE;
 
 function Courses() {
   const { courseId } = useParams();
-  const course = courses.find((course) => course._id === courseId);
+  const COURSES_API = `${API_BASE}/api/courses`;
+  const [course, setCourse] = useState<any>({ _id: "" });
+  const findCourseById = async (courseId?: string) => {
+    const response = await axios.get(
+      `${COURSES_API}/${courseId}`
+    );
+    setCourse(response.data);
+  };
+  useEffect(() => {
+    findCourseById(courseId);
+  }, [courseId]);
   const { pathname } = useLocation();
   const pathArray = pathname.split('/');
   const page = pathArray[pathArray.length - 1];
@@ -40,6 +55,8 @@ function Courses() {
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/:assignmentId" element={<h1>Assignment Editor</h1>} />
             <Route path="Grades" element={<h1>Grades</h1>} />
+            <Route path="Quizzes" element={<QuizList />} />
+            <Route path="Quizzes/:quizId" element={<QuizDetails />} />
           </Routes>
         </div>
       </div>
