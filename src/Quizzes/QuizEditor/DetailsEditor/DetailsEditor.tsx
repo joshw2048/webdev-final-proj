@@ -2,20 +2,17 @@
 import { AssignmentGroup, Quiz, QuizType, defaultQuizOptions } from "../../types"
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react"
+import './index.css'
 
-export const DetailsEditor = () => {
-  const { courseId } = useParams();
-  const [quiz, setQuiz] = useState<Quiz>({
-    ...defaultQuizOptions, 
-    name: "Unnamed Quiz", 
-    points: 0,
-    questions: [],
-    showCorrectAnswers: false,
-    availableDate: new Date(),
-    dueDate: new Date(),
-    untilDate: new Date(),
-    course: courseId ?? '',
-  });
+interface DetailsEditorProps {
+  setQuiz: (quiz: Quiz) => void;
+  quiz: Quiz;
+  saveAndPublish: (quiz: Quiz) => void;
+  save: (quiz: Quiz) => void;
+}
+
+export const DetailsEditor = (props: DetailsEditorProps) => {
+  const { quiz, setQuiz, saveAndPublish, save } = props;
 
   return (
     <>
@@ -25,7 +22,7 @@ export const DetailsEditor = () => {
     </div>
     {/* will need to make this prettier/update everything, just a placeholder */}
     <hr />
-    <div>    
+    <div className="details-container">    
       <input 
         type="text" 
         title="Quiz name" 
@@ -33,20 +30,14 @@ export const DetailsEditor = () => {
         onChange={(e) => setQuiz({...quiz, name: e.target.value })}
       />
       {/* wysiwyg element for description/question */}
-      <select onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}>
-        <option selected value="Graded Quiz">Graded Quiz</option>
+      <select defaultValue="Graded Quiz" onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}>
+        <option value="Graded Quiz">Graded Quiz</option>
         <option value="Practice Quiz">Practice Quiz</option>
         <option value="Graded Survey">Graded Survey</option>
         <option value="Ungraded Survey">Ungraded Survey</option>
       </select>
-      <select onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}>
-        <option selected value="Graded Quiz">Graded Quiz</option>
-        <option value="Practice Quiz">Practice Quiz</option>
-        <option value="Graded Survey">Graded Survey</option>
-        <option value="Ungraded Survey">Ungraded Survey</option>
-      </select>
-      <select onChange={(e) => setQuiz({...quiz, assignmentGroup: e.target.value as AssignmentGroup })}>
-        <option selected value="Quizzes">Quizzes</option>
+      <select defaultValue={"Quizzes"} onChange={(e) => setQuiz({...quiz, assignmentGroup: e.target.value as AssignmentGroup })}>
+        <option value="Quizzes">Quizzes</option>
         <option value="Exams">Exams</option>
         <option value="Assignments">Assignment</option>
         <option value="Project">Project</option>
@@ -66,7 +57,7 @@ export const DetailsEditor = () => {
             name="timeLimit"
             type="checkbox" 
             // todo figure thit validation out
-            checked
+            defaultChecked
           />
           <label htmlFor="timeLimit">Time Limit</label>
           <input 
@@ -156,8 +147,8 @@ export const DetailsEditor = () => {
     </div>
     <div className="save-options">
       <button>Cancel</button>
-      <button>Save and Publish</button>
-      <button>Save</button>
+      <button onClick={() => saveAndPublish(quiz)}>Save and Publish</button>
+      <button onClick={() => save(quiz)}>Save</button>
     </div>
     </>
   )

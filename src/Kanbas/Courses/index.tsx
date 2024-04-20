@@ -15,9 +15,7 @@ import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import { useMediumMediaQueryBreakpoint } from '../hooks/useMediumMediaQueryBreakpoint';
-import { Course } from '../types';
-import { QuizDetails } from '../../Quizzes/QuizDetails/QuizDetails';
-import { QuizList } from '../../Quizzes/QuizList/QuizList';
+import { Quizzes } from '../../Quizzes';
 
 const API_BASE = process.env.REACT_APP_API_BASE;
 
@@ -55,9 +53,7 @@ function Courses() {
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/:assignmentId" element={<h1>Assignment Editor</h1>} />
             <Route path="Grades" element={<h1>Grades</h1>} />
-            {/* todo: make quiz index route, remove these from courselist */}
-            <Route path="Quizzes" element={<QuizList />} />
-            <Route path="Quizzes/:quizId" element={<QuizDetails />} />
+            <Route path="Quizzes/*" element={<Quizzes />} />
           </Routes>
         </div>
       </div>

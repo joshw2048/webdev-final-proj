@@ -11,6 +11,7 @@ export const quizArray: Quiz[] = [
     dueDate: new Date("April 21, 2024 11:59:00"),
     availableDate: new Date("April 13, 2024 11:59:00"),
     untilDate: new Date("April 24, 2024 11:59:00"),
+    _id: "1"
   },  
   {
     ...defaultQuizOptions,
@@ -23,6 +24,7 @@ export const quizArray: Quiz[] = [
     availableDate: new Date("April 13, 2023 11:59:00"),
     untilDate: new Date("April 24, 2023 11:59:00"),
     published: true,
+    _id: "2"
   },
   {
     ...defaultQuizOptions,
@@ -34,5 +36,6 @@ export const quizArray: Quiz[] = [
     dueDate: new Date("April 21, 2025 11:59:00"),
     availableDate: new Date("April 13, 2025 11:59:00"),
     untilDate: new Date("April 24, 2025 11:59:00"),
+    _id: "3"
   }
 ];

@@ -18,7 +18,7 @@ export const QuizList = () => {
         <input type="search" placeholder="Search for Quiz"/>
         <div className="button-group">
           {/* Todo: add quiz button functionality */}
-          <button className="module-button button"><FaPlus /> Quiz</button>
+          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/create`}><FaPlus /> Quiz</Link>
           <button className="button"><FaEllipsisV /></button> 
         </div>
       </div>
