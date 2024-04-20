@@ -55,6 +55,7 @@ function Courses() {
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/:assignmentId" element={<h1>Assignment Editor</h1>} />
             <Route path="Grades" element={<h1>Grades</h1>} />
+            {/* todo: make quiz index route, remove these from courselist */}
             <Route path="Quizzes" element={<QuizList />} />
             <Route path="Quizzes/:quizId" element={<QuizDetails />} />
           </Routes>
