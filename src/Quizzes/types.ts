@@ -34,7 +34,10 @@ export const defaultQuizOptions: DefaultQuizOptions = {
   published: false,
 }
 
+type QuestionType = "MultipleChoice" | "TrueFalse" | "FillInBlank";
+
 interface BaseQuestion {
+  type: QuestionType;
   title: string;
   points: number;
   question: string;
