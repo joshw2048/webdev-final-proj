@@ -43,6 +43,7 @@ const QuizQuestionsEditor = () => {
     };
     setQuestions([...questions, newQuestion]);
     // setEditingQuestion(newQuestion as Question);
+
   };
 
   const handleEditQuestion = (question: any) => {
@@ -178,6 +179,7 @@ const QuizQuestionsEditor = () => {
 
     <br/>
       <button onClick={handleNewQuestion}>New Question</button>
+
 
       <button onClick={handlePublishQuiz}>Save &amp; Publish</button>
     </>

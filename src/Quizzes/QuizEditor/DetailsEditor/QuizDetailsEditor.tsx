@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Quiz, defaultQuizOptions } from "../../types";
 import { DetailsEditor } from "./DetailsEditor";
 
@@ -7,6 +7,7 @@ import { DetailsEditor } from "./DetailsEditor";
 // todo: change this to have initial state of the quiz at this id
 export const QuizDetailsEditor = () => {
   const { courseId, quizId } = useParams();
+  const navigate = useNavigate();
   console.log("do we ever get to the details editor btw")
 
   // initial state will be us fetching the quiz
@@ -25,11 +26,14 @@ export const QuizDetailsEditor = () => {
   const saveAndPublish = (quiz: Quiz) => {
     console.log(quiz);
     console.log("saving and publishing")
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
   }
 
   const save = (quiz: Quiz) => {
     console.log(quiz);
     console.log("saving only")
+    // todo: get quiz id upon post and navigate to quiz details
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
   }
 
   return(
