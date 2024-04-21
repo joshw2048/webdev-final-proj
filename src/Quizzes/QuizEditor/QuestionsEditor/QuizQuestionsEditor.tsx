@@ -8,6 +8,7 @@ import { defaultFIBAnswers, defaultMCAnswers, getQuestionType } from '../../util
 // temporary questions before we put stuff in the database
 let mc: MultipleChoice = {
   title: "Q1",
+  type: "MultipleChoice",
   points: 4,
   question: "What is the capital of France?",
   correctAnswer: "Paris",
@@ -15,12 +16,14 @@ let mc: MultipleChoice = {
 }
 let tf: TrueFalse = {
   title: "Q2",
+  type: "TrueFalse",
   points: 4,
   question: "The Earth is flat.",
   correctAnswer: false,
 }
 let fib: FillInBlank = {
   title: "Q3",
+  type: "FillInBlank",
   points: 4,
   question: "What is the capital of The United States?",
   correctAnswers: ["DC", "Washington DC", "Washington D.C."],
@@ -36,6 +39,7 @@ const QuizQuestionsEditor = () => {
   const handleNewQuestion = () => {
     const newQuestion: MultipleChoice = {
       title: "Q" + (questions.length + 1),
+      type: "MultipleChoice",
       points: 4,
       question: 'New question',
       correctAnswer: "Example 1",
