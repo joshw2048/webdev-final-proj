@@ -6,9 +6,10 @@ import "./index.css"
 import { FaCheckCircle, FaEllipsisV, FaPencilAlt } from "react-icons/fa";
 
 export const QuizDetails = () => {
-  const { quizId } = useParams();
-  // TODO: Change this to use backend
-  const quiz = quizArray.find((quiz) => quiz._id ?? '' === quizId) ?? quizArray[0];
+  const { courseId, quizId } = useParams();
+  
+  // TODO: Change this to use backend + also NONE of these have Ids yet??
+  const quiz = quizArray.find((quiz) => quiz._id === quizId) ?? quizArray[0];
 
   return(
     <div className='assignments-container'>
@@ -18,7 +19,7 @@ export const QuizDetails = () => {
         {/* Todo: add/figure out button functionality */}
         <button className="button publish-button"><FaCheckCircle />Published</button>
         <button className="button">Preview</button>
-        <button className="button"><FaPencilAlt />Edit</button>
+        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/edit/details`}><FaPencilAlt />Edit</Link>
         <button className="button"><FaEllipsisV /></button> 
       </div>
     </div>

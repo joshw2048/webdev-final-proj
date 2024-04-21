@@ -6,7 +6,7 @@ export interface BaseQuiz {
   points: number;
   assignmentGroup: AssignmentGroup;
   shuffleAnswers: boolean;
-  timeLimit: number; // in minutes
+  timeLimit?: number; // in minutes
   multipleAttempts: boolean;
   showCorrectAnswers: boolean;
   accessCode: string;
@@ -34,7 +34,10 @@ export const defaultQuizOptions: DefaultQuizOptions = {
   published: false,
 }
 
+type QuestionType = "MultipleChoice" | "TrueFalse" | "FillInBlank";
+
 interface BaseQuestion {
+  type: QuestionType;
   title: string;
   points: number;
   question: string;
