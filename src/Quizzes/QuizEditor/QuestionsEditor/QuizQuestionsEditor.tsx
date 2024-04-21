@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Question } from '../../types';
 import { MultipleChoice, TrueFalse, FillInBlank } from '../../types';
+import { defaultFIBAnswers, defaultMCAnswers, getQuestionType } from '../../utils';
 
 // temporary questions before we put stuff in the database
 let mc: MultipleChoice = {
@@ -30,7 +31,7 @@ const sampleQuestions = [mc, tf, fib];
 const QuizQuestionsEditor = () => {
   const [questions, setQuestions] = useState(sampleQuestions);
   const [editingQuestion, setEditingQuestion] = useState(null);
-  const [questionType, setQuestionType] = useState('multiple-choice');
+  const [questionType, setQuestionType] = useState('');
 
   const handleNewQuestion = () => {
     // const newQuestion = {
@@ -42,14 +43,16 @@ const QuizQuestionsEditor = () => {
     // };
     // setQuestions([...questions, newQuestion]);
     // setEditingQuestion(newQuestion);
-    console.log(questions[0].constructor.name);
   };
 
   const handleEditQuestion = (question: any) => {
+    setQuestions(questions.filter((qs) => qs.title !== question.title))
     setEditingQuestion(question);
+    setQuestionType(getQuestionType(question));
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (question: any) => {
+    setQuestions([...questions, question]);
     setEditingQuestion(null);
   };
 
@@ -57,7 +60,7 @@ const QuizQuestionsEditor = () => {
     const updatedQuestions = questions.map((q: any) =>
       q.id === updatedQuestion.id ? updatedQuestion : q
     );
-    setQuestions(updatedQuestions);
+    setQuestions([...questions, updatedQuestion]);
     setEditingQuestion(null);
   };
 
@@ -69,61 +72,108 @@ const QuizQuestionsEditor = () => {
     <>
       <div>
       <h1>Quiz Questions</h1>
-      {/* <table className="w-100">
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Points</th>
-            <th>Options</th>
-            <th>Answer</th>
-          </tr>
-        </thead>
-        <tbody> */}
-          {questions.map((question: Question) => (
-            <div> <br />
-              <div className="border">
-                <h3>{question.title}</h3>
-                <p className="fw-bold">{question.question}</p>
-                { (question as MultipleChoice).possibleAnswers !== undefined && (
-                  <ul className="list-unstyled">
-                    {(question as MultipleChoice).possibleAnswers.map((option) => (
-                      <li>
-                        <label>
-                          <input type="radio" name={question.title} value={option} />
-                          {option}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                  )}
-                { (question as TrueFalse).correctAnswer !== undefined && (question as MultipleChoice).possibleAnswers === undefined && (
-                    <div>
-                    <label>
-                      <input value="true" type="radio" name={question.title}></input>
-                      True
-                    </label> <br />
-                    <label>
-                      <input value="false" type="radio" name={question.title}></input>
-                      False
-                    </label>
-                    <br/>                    
-                    </div> 
-                    )
-                }
-                { (question as FillInBlank).correctAnswers !== undefined && (
+        {questions.map((question: Question) => (
+          <div> <br />
+            <div className="border">
+              <h3>{question.title}</h3>
+              <p className="fw-bold">{question.question}</p>
+              { (question as MultipleChoice).possibleAnswers !== undefined && (
+                <ul className="list-unstyled">
+                  {(question as MultipleChoice).possibleAnswers.map((option) => (
+                    <li>
+                      <label>
+                        <input type="radio" name={question.title} value={option} />
+                        {option}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+                )}
+              { (question as TrueFalse).correctAnswer !== undefined && (question as MultipleChoice).possibleAnswers === undefined && (
                   <div>
-                  <input type="textarea"></input>
-                  <br/>
-                  </div>
+                  <label>
+                    <input value="true" type="radio" name={question.title}></input>
+                    True
+                  </label> <br />
+                  <label>
+                    <input value="false" type="radio" name={question.title}></input>
+                    False
+                  </label>
+                  <br/>                    
+                  </div> 
                   )
-                }
+              }
+              { (question as FillInBlank).correctAnswers !== undefined && (
+                <div>
+                <input type="textarea"></input>
                 <br/>
-                  <button onClick={() => handleEditQuestion(question)}>
-                      Edit
-                  </button>
+                </div>
+                )
+              }
+              <br/>
+                <button onClick={() => handleEditQuestion(question)}>
+                    Edit
+                </button>
               </div>
             </div>
-          ))}
+        ))} <br />
+
+        {editingQuestion !== null && (
+          <div className="border">
+            <h3>Edit Question {(editingQuestion as Question).title}</h3>
+            <div>
+              <select
+                value={questionType}
+                onChange={(e) => setQuestionType(e.target.value)}>
+                <option value="true-false">True False</option>
+                <option value="multiple-choice">Multiple Choice</option>
+                <option value="fill-blanks">Fill in Blank</option>
+              </select> <br /> <br />
+            </div>
+            <label>
+              Question: 
+              <input type="text" defaultValue={(editingQuestion as Question).question}></input>
+            </label> <br />
+            <label>
+              Select correct answer: 
+            </label>
+            { questionType === 'multiple-choice' && (
+                <ul className="list-unstyled">
+                  {defaultMCAnswers(editingQuestion).map((option) => (
+                    <li>
+                      <label>
+                        <input type="radio" name={(editingQuestion as MultipleChoice).title} value={option} />
+                        <input type="text" defaultValue={option}></input>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+            )}            
+            { questionType === 'true-false' && (
+              <div>
+                <label>
+                  <input value="true" type="radio" name={(editingQuestion as Question).title}></input>
+                  True
+                </label> <br />
+                <label>
+                  <input value="false" type="radio" name={(editingQuestion as Question).title}></input>
+                  False
+                </label>
+                <br/>                    
+              </div> 
+            )}  
+            { questionType === 'fill-blanks' && (
+              <div>
+                <p className='fw-bold'>Please separate answers by a comma and space</p>
+                <input type="text" defaultValue={defaultFIBAnswers(editingQuestion)}></input>
+                <br/>
+              </div>
+            )}
+            <button onClick={() => handleCancelEdit(editingQuestion)}>Cancel</button>
+            <button onClick={handleSaveQuestion}>Save</button>
+          </div>
+          )
+        }
     </div>
 
     <br/>
