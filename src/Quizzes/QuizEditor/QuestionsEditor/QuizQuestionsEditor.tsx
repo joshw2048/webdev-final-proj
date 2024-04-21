@@ -8,6 +8,7 @@ import { defaultFIBAnswers, defaultMCAnswers, getQuestionType } from '../../util
 // temporary questions before we put stuff in the database
 let mc: MultipleChoice = {
   title: "Q1",
+  type: "MultipleChoice",
   points: 4,
   question: "What is the capital of France?",
   correctAnswer: "Paris",
@@ -15,12 +16,14 @@ let mc: MultipleChoice = {
 }
 let tf: TrueFalse = {
   title: "Q2",
+  type: "TrueFalse",
   points: 4,
   question: "The Earth is flat.",
   correctAnswer: false,
 }
 let fib: FillInBlank = {
   title: "Q3",
+  type: "FillInBlank",
   points: 4,
   question: "What is the capital of The United States?",
   correctAnswers: ["DC", "Washington DC", "Washington D.C."],
@@ -34,15 +37,18 @@ const QuizQuestionsEditor = () => {
   const [questionType, setQuestionType] = useState('');
 
   const handleNewQuestion = () => {
-    // const newQuestion = {
-    //   id: questions.length + 1,
-    //   type: questionType,
-    //   content: '',
-    //   options: [],
-    //   answer: '',
-    // };
-    // setQuestions([...questions, newQuestion]);
-    // setEditingQuestion(newQuestion);
+    const newQuestion: MultipleChoice = {
+      title: "Q" + (questions.length + 1),
+      type: "MultipleChoice",
+
+      points: 4,
+      question: 'New question',
+      correctAnswer: "Example 1",
+      possibleAnswers: ['Example 1', 'Example 2', 'Example 3', 'Example 4']
+    };
+    setQuestions([...questions, newQuestion]);
+    // setEditingQuestion(newQuestion as Question);
+
   };
 
   const handleEditQuestion = (question: any) => {
@@ -178,14 +184,7 @@ const QuizQuestionsEditor = () => {
 
     <br/>
       <button onClick={handleNewQuestion}>New Question</button>
-      <select
-        value={questionType}
-        onChange={(e) => setQuestionType(e.target.value)}
-      >
-        <option value="true-false">True/False</option>
-        <option value="multiple-choice">Multiple Choice</option>
-        <option value="fill-blanks">Fill in Multiple Blanks</option>
-      </select>
+
 
       <button onClick={handlePublishQuiz}>Save &amp; Publish</button>
     </>
