@@ -40,6 +40,7 @@ const QuizQuestionsEditor = () => {
     const newQuestion: MultipleChoice = {
       title: "Q" + (questions.length + 1),
       type: "MultipleChoice",
+
       points: 4,
       question: 'New question',
       correctAnswer: "Example 1",
