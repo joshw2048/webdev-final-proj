@@ -8,7 +8,6 @@ import { DetailsEditor } from "./DetailsEditor";
 export const QuizDetailsEditor = () => {
   const { courseId, quizId } = useParams();
   const navigate = useNavigate();
-  console.log("do we ever get to the details editor btw")
 
   // initial state will be us fetching the quiz
   const [quiz, setQuiz] = useState<Quiz>({

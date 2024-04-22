@@ -1,26 +1,41 @@
 import { quizArray } from "../exampleQuizzes";
 import { Quiz } from "../types";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import { translateBooleanToStringValue } from '../utils';
 import "./index.css"
 import { FaCheckCircle, FaEllipsisV, FaPencilAlt } from "react-icons/fa";
 
 export const QuizDetails = () => {
   const { courseId, quizId } = useParams();
+  const navigate = useNavigate();
   
   // TODO: Change this to use backend + also NONE of these have Ids yet??
-  const quiz = quizArray.find((quiz) => quiz._id === quizId) ?? quizArray[0];
+  const quizX = quizArray.find((quiz) => quiz._id === quizId) ?? quizArray[0];
+  const [quiz, setQuiz] = useState<Quiz>(quizX);
 
   return(
     <div className='assignments-container'>
     <div className="top-content">
       <div></div>
       <div className="button-group">
-        {/* Todo: add/figure out button functionality */}
-        <button className="button publish-button"><FaCheckCircle />Published</button>
-        <button className="button">Preview</button>
-        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/edit/details`}><FaPencilAlt />Edit</Link>
-        <button className="button"><FaEllipsisV /></button> 
+        {quiz.published === false ? 
+          <button onClick={() => setQuiz({...quiz, published: true})} className="btn btn-success mx-2"><FaCheckCircle />Publish</button> :
+          <button onClick={() => setQuiz({...quiz, published: false})} className="btn btn-danger mx-2">Unpublish</button>}
+        <button 
+          className="btn btn-light mx-2"
+          onClick={() => navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/preview`)}
+        >
+          Preview
+        </button>
+        <button 
+          className="btn btn-light mx-2" 
+          onClick={() => navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/edit/details`)}
+        >
+          <FaPencilAlt />
+          Edit
+        </button>
+        <button className="btn btn-light mx-2"><FaEllipsisV /></button> 
       </div>
     </div>
     <div className="assignments-wrapper">
