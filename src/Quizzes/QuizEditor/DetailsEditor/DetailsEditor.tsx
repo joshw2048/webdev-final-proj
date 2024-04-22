@@ -1,6 +1,7 @@
 
 import { AssignmentGroup, Quiz, QuizType, defaultQuizOptions } from "../../types"
-import { Link, useParams } from "react-router-dom";
+import { FaCheckCircle, FaEllipsisV, FaPlane, FaPlusCircle, FaRegTimesCircle, FaPlus } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react"
 import './index.css'
 import { Editor } from "@tinymce/tinymce-react";
@@ -14,53 +15,65 @@ interface DetailsEditorProps {
 
 export const DetailsEditor = (props: DetailsEditorProps) => {
   const { quiz, setQuiz, saveAndPublish, save } = props;
+  const navigate = useNavigate();
+  const { courseId } = useParams();
 
-  console.log("idk", quiz.instructions)
+
+  console.log("idk", quiz.published)
   return (
-    <>
-    <div>
-      <p>{quiz.questions.map((question) => question.points).reduce((acc, val) => acc + val, 0)} points</p>
-      Published or not (change this)
-    </div>
-    {/* will need to make this prettier/update everything, just a placeholder */}
-    <hr />
-    <div className="details-container">    
-      <input 
-        type="text" 
-        title="Quiz name" 
-        value={quiz.name} 
-        onChange={(e) => setQuiz({...quiz, name: e.target.value })}
-      />
-      <Editor 
-        apiKey="kzaz9q6p91bsbhvej8056yz0r9mtzu36bihtmfwfvcxbyxqx"
-        onEditorChange={(newValue, _) => {
-          setQuiz({...quiz, instructions: newValue})
-        }}
-        value={quiz.instructions}
-      />
-      <select defaultValue="Graded Quiz" onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}>
-        <option value="Graded Quiz">Graded Quiz</option>
-        <option value="Practice Quiz">Practice Quiz</option>
-        <option value="Graded Survey">Graded Survey</option>
-        <option value="Ungraded Survey">Ungraded Survey</option>
-      </select>
-      <select defaultValue={"Quizzes"} onChange={(e) => setQuiz({...quiz, assignmentGroup: e.target.value as AssignmentGroup })}>
-        <option value="Quizzes">Quizzes</option>
-        <option value="Exams">Exams</option>
-        <option value="Assignments">Assignment</option>
-        <option value="Project">Project</option>
-      </select>
-      <div>      
-        <input 
-          name="shuffle"
-          type="checkbox" 
-          checked={quiz.shuffleAnswers} 
-          onChange={() => setQuiz({...quiz, shuffleAnswers: !quiz.shuffleAnswers})}
-        />
-        <label htmlFor="shuffle">Shuffle Answers</label>
+    <div className="m-2 p-2 px-3">
+      <div className="d-flex justify-content-end my-2">
+        <p>{quiz.questions.map((question) => question.points).reduce((acc, val) => acc + val, 0)} points</p>
+        {quiz.published === false ? 
+          <div className="mx-3"><FaRegTimesCircle />Not Published</div> : 
+          <div className="mx-3"> <FaCheckCircle /> Published</div>}
       </div>
-      <div>
-        <div>
+      <hr />
+      <div className="details-container">    
+        <input 
+          className="form-control"
+          type="text" 
+          title="Quiz name" 
+          value={quiz.name} 
+          onChange={(e) => setQuiz({...quiz, name: e.target.value })}
+        />
+        <Editor 
+          apiKey="kzaz9q6p91bsbhvej8056yz0r9mtzu36bihtmfwfvcxbyxqx"
+          onEditorChange={(newValue, _) => {
+            setQuiz({...quiz, instructions: newValue})
+          }}
+          value={quiz.instructions}
+        />
+        <select 
+          className="form-select" 
+          defaultValue="Graded Quiz" 
+          onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}
+        >
+          <option value="Graded Quiz">Graded Quiz</option>
+          <option value="Practice Quiz">Practice Quiz</option>
+          <option value="Graded Survey">Graded Survey</option>
+          <option value="Ungraded Survey">Ungraded Survey</option>
+        </select>
+        <select 
+          className="form-select" 
+          defaultValue={"Quizzes"} 
+          onChange={(e) => setQuiz({...quiz, assignmentGroup: e.target.value as AssignmentGroup })}
+        >
+          <option value="Quizzes">Quizzes</option>
+          <option value="Exams">Exams</option>
+          <option value="Assignments">Assignment</option>
+          <option value="Project">Project</option>
+        </select>
+        <div className="d-flex gap-2">      
+          <input 
+            name="shuffle"
+            type="checkbox" 
+            checked={quiz.shuffleAnswers} 
+            onChange={() => setQuiz({...quiz, shuffleAnswers: !quiz.shuffleAnswers})}
+          />
+          <label htmlFor="shuffle">Shuffle Answers</label>
+        </div>
+        <div className="d-flex justify-content-start align-items-center gap-2">
           <input 
             name="timeLimit"
             type="checkbox" 
@@ -69,6 +82,7 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
           />
           <label htmlFor="timeLimit">Time Limit</label>
           <input 
+            className="form-control w-25"
             type="number"
             id="quiz-time-limit"
             value="20"
@@ -76,88 +90,97 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
           />
           <label htmlFor="quiz-time-limit">Minutes</label>
         </div>
-      </div>
-      <div>
+        <div className="d-flex gap-2">
+          <input 
+            name="multipleAttempts"
+            type="checkbox" 
+            checked={quiz.multipleAttempts} 
+            onChange={() => setQuiz({...quiz, multipleAttempts: !quiz.multipleAttempts})}
+          />
+          <label htmlFor="multipleAttempts">Allow multiple attempts</label>
+        </div>
+        <div className="d-flex gap-2">
+          <input 
+            name="showCorrectAnswers"
+            type="checkbox" 
+            checked={quiz.showCorrectAnswers} 
+            onChange={() => setQuiz({...quiz, showCorrectAnswers: !quiz.showCorrectAnswers})}
+          />
+          <label htmlFor="showCorrectAnswers">Show correct answers</label>
+        </div>
         <input 
-          name="multipleAttempts"
-          type="checkbox" 
-          checked={quiz.multipleAttempts} 
-          onChange={() => setQuiz({...quiz, multipleAttempts: !quiz.multipleAttempts})}
+          className="form-control"
+          type="text" 
+          title="Access code" 
+          value={quiz.accessCode} 
+          placeholder="quiz passcode"
+          onChange={(e) => setQuiz({...quiz, accessCode: e.target.value })}
         />
-        <label htmlFor="multipleAttempts">Allow multiple attempts</label>
+        <div className="d-flex gap-2">
+          <input 
+            name="oneQuestion"
+            type="checkbox" 
+            checked={quiz.oneQuestionAtTime} 
+            onChange={() => setQuiz({...quiz, oneQuestionAtTime: !quiz.oneQuestionAtTime})}
+          />
+          <label htmlFor="oneQuestion">One question at a time</label>
+        </div>
+        <div className="d-flex gap-2">
+          <input 
+            name="webcam"
+            type="checkbox" 
+            checked={quiz.webcamRequired} 
+            onChange={() => setQuiz({...quiz, webcamRequired: !quiz.webcamRequired})}
+          />
+          <label htmlFor="webcam">Webcam required</label>
+        </div>
+        <div className="d-flex gap-2">
+          <input 
+            name="lockQuestions"
+            type="checkbox" 
+            checked={quiz.lockQuestionsAfterAnswering} 
+            onChange={() => setQuiz({...quiz, lockQuestionsAfterAnswering: !quiz.lockQuestionsAfterAnswering})}
+          />
+          <label htmlFor="lockQuestions">Lock questions after answering</label>
+        </div>
+        <div className="d-flex gap-2 align-items-center">
+          <label htmlFor="dueDate">Due Date: </label>
+          <input 
+            type="date"
+            className="form-control w-25"
+            id="dueDate"
+            value={quiz.dueDate.toISOString().split('T')[0]}
+            onChange={(e) => setQuiz({...quiz, dueDate: new Date(e.target.value)})}
+          />
+        </div>
+        <div className="d-flex gap-2 align-items-center">
+          <label htmlFor="availDate">Available Date: </label>
+          <input 
+            className="form-control w-25"
+            type="date"
+            id="availDate"
+            value={quiz.availableDate.toISOString().split('T')[0]}
+            onChange={(e) => setQuiz({...quiz, availableDate: new Date(e.target.value)})}
+          />
+        </div>
+        <div className="d-flex gap-2 align-items-center">
+          <label htmlFor="untilDate">Until date: </label>
+          <input 
+            className="form-control w-25"
+            type="date"
+            id="untilDate"
+            value={quiz.untilDate.toISOString().split('T')[0]}
+            onChange={(e) => setQuiz({...quiz, untilDate: new Date(e.target.value)})}
+          />
+        </div>
       </div>
-      <div>
-        <input 
-          name="showCorrectAnswers"
-          type="checkbox" 
-          checked={quiz.showCorrectAnswers} 
-          onChange={() => setQuiz({...quiz, showCorrectAnswers: !quiz.showCorrectAnswers})}
-        />
-        <label htmlFor="showCorrectAnswers">Show correct answers</label>
-      </div>
-      <input 
-        type="text" 
-        title="Access code" 
-        value={quiz.accessCode} 
-        onChange={(e) => setQuiz({...quiz, accessCode: e.target.value })}
-      />
-      <div>
-        <input 
-          name="oneQuestion"
-          type="checkbox" 
-          checked={quiz.oneQuestionAtTime} 
-          onChange={() => setQuiz({...quiz, oneQuestionAtTime: !quiz.oneQuestionAtTime})}
-        />
-        <label htmlFor="oneQuestion">One question at a time</label>
-      </div>
-      <div>
-        <input 
-          name="webcam"
-          type="checkbox" 
-          checked={quiz.webcamRequired} 
-          onChange={() => setQuiz({...quiz, webcamRequired: !quiz.webcamRequired})}
-        />
-        <label htmlFor="webcam">Webcam required</label>
-      </div>
-      <div>
-        <input 
-          name="lockQuestions"
-          type="checkbox" 
-          checked={quiz.lockQuestionsAfterAnswering} 
-          onChange={() => setQuiz({...quiz, lockQuestionsAfterAnswering: !quiz.lockQuestionsAfterAnswering})}
-        />
-        <label htmlFor="lockQuestions">Lock questions after answering</label>
-      </div>
-      <div>
-        <label htmlFor="dueDate">Due Date: </label>
-        <input type="date"
-          id="dueDate"
-          value={quiz.dueDate.toISOString().split('T')[0]}
-          onChange={(e) => setQuiz({...quiz, dueDate: new Date(e.target.value)})}
-        />
-      </div>
-      <div>
-        <label htmlFor="availDate">Available Date: </label>
-        <input type="date"
-          id="availDate"
-          value={quiz.availableDate.toISOString().split('T')[0]}
-          onChange={(e) => setQuiz({...quiz, availableDate: new Date(e.target.value)})}
-        />
-      </div>
-      <div>
-        <label htmlFor="untilDate">Until date: </label>
-        <input type="date"
-          id="untilDate"
-          value={quiz.untilDate.toISOString().split('T')[0]}
-          onChange={(e) => setQuiz({...quiz, untilDate: new Date(e.target.value)})}
-        />
+      <div className="py-2 my-4 d-flex gap-2 border-top border-bottom">
+        <button className="btn btn-light" onClick={() => {
+          navigate(`/Kanbas/Courses/${courseId}/Quizzes/`)
+        }}>Cancel</button>
+        <button className="btn btn-light" onClick={() => saveAndPublish(quiz)}>Save and Publish</button>
+        <button className="btn btn-danger" onClick={() => save(quiz)}>Save</button>
       </div>
     </div>
-    <div className="save-options">
-      <button>Cancel</button>
-      <button onClick={() => saveAndPublish(quiz)}>Save and Publish</button>
-      <button onClick={() => save(quiz)}>Save</button>
-    </div>
-    </>
   )
 }
