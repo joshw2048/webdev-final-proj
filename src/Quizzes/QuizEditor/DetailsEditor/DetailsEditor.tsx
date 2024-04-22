@@ -3,6 +3,7 @@ import { AssignmentGroup, Quiz, QuizType, defaultQuizOptions } from "../../types
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react"
 import './index.css'
+import { Editor } from "@tinymce/tinymce-react";
 
 interface DetailsEditorProps {
   setQuiz: (quiz: Quiz) => void;
@@ -14,6 +15,7 @@ interface DetailsEditorProps {
 export const DetailsEditor = (props: DetailsEditorProps) => {
   const { quiz, setQuiz, saveAndPublish, save } = props;
 
+  console.log("idk", quiz.instructions)
   return (
     <>
     <div>
@@ -29,7 +31,13 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
         value={quiz.name} 
         onChange={(e) => setQuiz({...quiz, name: e.target.value })}
       />
-      {/* wysiwyg element for description/question */}
+      <Editor 
+        apiKey="kzaz9q6p91bsbhvej8056yz0r9mtzu36bihtmfwfvcxbyxqx"
+        onEditorChange={(newValue, _) => {
+          setQuiz({...quiz, instructions: newValue})
+        }}
+        value={quiz.instructions}
+      />
       <select defaultValue="Graded Quiz" onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}>
         <option value="Graded Quiz">Graded Quiz</option>
         <option value="Practice Quiz">Practice Quiz</option>

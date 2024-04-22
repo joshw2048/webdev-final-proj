@@ -17,6 +17,7 @@ export interface BaseQuiz {
   availableDate: Date;
   untilDate: Date;
   published: boolean;
+  instructions: string;
 }
 
 type DefaultQuizOptions = Omit<BaseQuiz, "points" | "showCorrectAnswers" | "dueDate" | "availableDate" | "untilDate">;
@@ -32,6 +33,7 @@ export const defaultQuizOptions: DefaultQuizOptions = {
   webcamRequired: false,
   lockQuestionsAfterAnswering: false,
   published: false,
+  instructions: '',
 }
 
 type QuestionType = "MultipleChoice" | "TrueFalse" | "FillInBlank";
