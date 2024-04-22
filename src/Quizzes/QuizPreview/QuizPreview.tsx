@@ -1,32 +1,52 @@
 import { useState } from "react";
 import { Question } from "../types";
-import { PreviewFillBlanks } from "./PreviewFillBlanks";
-import { PreviewMC } from "./PreviewMC";
-import { PreviewTrueFalse } from "./PreviewTrueFalse";
-
-
-const renderQuestion = (question: Question, index: number) => {
-  switch(question.type) {
-    case "MultipleChoice": {
-      return <PreviewMC question={question} questionNum={index} />
-    }
-    case "TrueFalse": {
-      return <PreviewTrueFalse question={question} questionNum={index}/>
-    }
-    case "FillInBlank": {
-      return <PreviewFillBlanks question={question} questionNum={index} />
-    }
-  }
-}
+import { QuestionPreview } from "./QuestionPreview";
+import { questionArray } from "../exampleQuizzes";
+import { FaInfoCircle } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
 
 export const QuizPreview = () => {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const { courseId, quizId } = useParams();
+  // todo: hook this up to the backend
+  const [questions, setQuestions] = useState<Question[]>(questionArray);
   const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
 
+  const getCurrentQuestion = () => {
+    if (currQuestionIndex > questions.length || currQuestionIndex < 0) {
+      return undefined;
+    }
+
+    return questions[currQuestionIndex]
+  }
+
+  const question = getCurrentQuestion();
+
+  const nextQuestion = () => {
+    setCurrQuestionIndex(currQuestionIndex + 1);
+  }
+
+  const previousQuestion = () => {
+    setCurrQuestionIndex(currQuestionIndex - 1);
+  }
   return(
-    <>
-    <button>Previous</button>
-    <button>Next</button>
-    </>
+    <div className="m-5">
+      <div className="alert alert-danger d-flex align-items-center" role="alert"><FaInfoCircle /><p className="px-2 my-0">This is a preview of the pubished version of this quiz</p></div>
+      <h3>Quiz Instructions</h3>
+      <hr />
+      {question ? <QuestionPreview question={question} questionNum={currQuestionIndex}/> : <h1>No questions found</h1>}
+      <div className="d-flex justify-content-end my-3">
+        <button className="btn btn-light mx-2" onClick={previousQuestion} disabled={currQuestionIndex <= 0}>Previous</button>
+        <button className="btn btn-light" onClick={nextQuestion} disabled={currQuestionIndex >= questions.length - 1}>Next</button>
+      </div>
+      <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/edit`}>Keep editing this quiz</Link>
+      <div className="my-3">
+        <h5>Questions</h5>
+        <ul style={{listStyleType: 'none', cursor: 'pointer'}}>
+          {questions.map((question, index) => {
+            return <li onClick={() => {setCurrQuestionIndex(index)}} key={index}><FaInfoCircle /> {`Question ${index + 1}`}</li>
+          })}
+        </ul>
+      </div>
+    </div>
   )
 }

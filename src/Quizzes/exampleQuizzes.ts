@@ -1,4 +1,4 @@
-import { Quiz, defaultQuizOptions } from "./types"
+import { Question, Quiz, defaultQuizOptions } from "./types"
 // for testing while we don't have a backend
 export const quizArray: Quiz[] = [
   {
@@ -39,3 +39,28 @@ export const quizArray: Quiz[] = [
     _id: "3"
   }
 ];
+
+export const questionArray: Question[] = [
+  {
+    title: "Q1",
+    type: "MultipleChoice",
+    points: 4,
+    question: "What is the capital of France?",
+    correctAnswer: "Paris",
+    possibleAnswers: ["London", "Paris", "Berlin", "Rome"]
+  },
+  {
+    title: "Q2",
+    type: "TrueFalse",
+    points: 4,
+    question: "The Earth is flat.",
+    correctAnswer: false,
+  },
+  {
+    title: "Q3",
+    type: "FillInBlank",
+    points: 4,
+    question: "What is the capital of The United States?",
+    correctAnswers: ["DC", "Washington DC", "Washington D.C."],
+  }
+]

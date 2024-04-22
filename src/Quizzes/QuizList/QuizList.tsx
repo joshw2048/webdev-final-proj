@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCheckCircle, FaEllipsisV, FaPlane, FaPlusCircle, FaRegTimesCircle, FaPlus } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { quizArray } from "../exampleQuizzes";
 import { Quiz } from "../types";
 import { createAvailabilityText } from "../utils";
@@ -8,6 +8,7 @@ import './index.css';
 
 export const QuizList = () => {
   const { courseId } = useParams();
+  const navigate = useNavigate();
 
   // TODO: Change this to use backend
   const quizzesList: Quiz[] = quizArray.filter((quiz) => quiz.course === courseId);
@@ -18,8 +19,14 @@ export const QuizList = () => {
         <input type="search" placeholder="Search for Quiz"/>
         <div className="button-group">
           {/* Todo: add quiz button functionality */}
-          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/create`}><FaPlus /> Quiz</Link>
-          <button className="button"><FaEllipsisV /></button> 
+          <button 
+            className="btn btn-danger"
+            onClick={() => navigate(`/Kanbas/Courses/${courseId}/Quizzes/create`)}
+          >
+            <FaPlus /> 
+            Quiz
+          </button>
+          <button className="btn btn-light mx-2"><FaEllipsisV /></button> 
         </div>
       </div>
       <div className="assignments-wrapper">
