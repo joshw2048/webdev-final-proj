@@ -45,6 +45,7 @@ const QuizQuestionsEditor = () => {
   };
 
   const [editingQuestion, setEditingQuestion] = useState<any>(defaultQuestion);
+  const [title, setTitle] = useState('');
   const [questionType, setQuestionType] = useState('');
   const [displayEditingQuestion, setDisplayEditingQuestion] = useState(false);
   const [newQuestion, setNewQuestion] = useState(false);
@@ -91,7 +92,7 @@ const QuizQuestionsEditor = () => {
     setDisplayEditingQuestion(false);
   };
 
-  const handleSaveQuestion = (title: string) => {
+  const handleSaveQuestion = () => {
     if (questionType === 'multiple-choice') {
       let updatedQuestion: MultipleChoice = {
         title: title,
@@ -253,6 +254,10 @@ const QuizQuestionsEditor = () => {
         {displayEditingQuestion === true && (
           <div className="border">
             <h3>Edit Question {(editingQuestion as Question).title}</h3>
+            <label>
+              Title: 
+              <input type="text" defaultValue={(editingQuestion as Question).title} onChange={(e) => setTitle(e.target.value)}></input>
+            </label> <br />
             <div>
               <select
                 value={questionType}
@@ -318,7 +323,7 @@ const QuizQuestionsEditor = () => {
               </div>
             )}
             <button onClick={() => handleCancelEdit(editingQuestion as Question)}>Cancel</button>
-            <button onClick={() => handleSaveQuestion((editingQuestion as Question).title)}>Save</button>
+            <button onClick={handleSaveQuestion}>Save</button>
           </div>
           )
         }
@@ -326,8 +331,7 @@ const QuizQuestionsEditor = () => {
 
     <br/>
       <button onClick={handleNewQuestion}>New Question</button>
-
-
+      <button>Save</button>
       <button onClick={handlePublishQuiz}>Save &amp; Publish</button>
     </>
   );
