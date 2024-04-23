@@ -20,8 +20,8 @@ export const createAvailabilityText = (quiz: Quiz) => {
   return availabilityString + dueString;
 }
 
-export const parseFIBAnswers = (question: Question) => {
-
+export const parseFIBAnswers = (answers: String) => {
+  return answers.split(", ");
 }
 
 export const defaultFIBAnswers = (question: Question) => {
@@ -29,7 +29,6 @@ export const defaultFIBAnswers = (question: Question) => {
     return "Example 1, Example 2"
   } else {
     const correctAnswers = (question as FillInBlank).correctAnswers;
-    console.log(correctAnswers)
     return correctAnswers.join(', ');
   }
 }
@@ -49,5 +48,13 @@ export const defaultMCAnswers = (question: Question) => {
     return ["Example 1", "Example 2", "Example 3", "Example 4"];
   } else {
     return (question as MultipleChoice).possibleAnswers;
+  }
+}
+
+export const getFIBChoices = (question: Question) => {
+  if ((question as FillInBlank).correctAnswers === undefined) {
+    return ["Example 1", "Example 2", "Example 3", "Example 4"];
+  } else {
+    return (question as FillInBlank).correctAnswers;
   }
 }

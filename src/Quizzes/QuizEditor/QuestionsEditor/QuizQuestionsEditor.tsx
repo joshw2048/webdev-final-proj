@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Question } from '../../types';
 import { MultipleChoice, TrueFalse, FillInBlank } from '../../types';
-import { defaultFIBAnswers, defaultMCAnswers, getQuestionType } from '../../utils';
+import { defaultFIBAnswers, defaultMCAnswers, getFIBChoices, getQuestionType, parseFIBAnswers } from '../../utils';
 
 // temporary questions before we put stuff in the database
 let mc: MultipleChoice = {
@@ -31,44 +31,166 @@ let fib: FillInBlank = {
 const sampleQuestions = [mc, tf, fib];
 
 
+
 const QuizQuestionsEditor = () => {
   const [questions, setQuestions] = useState(sampleQuestions);
-  const [editingQuestion, setEditingQuestion] = useState(null);
-  const [questionType, setQuestionType] = useState('');
 
-  const handleNewQuestion = () => {
-    const newQuestion: MultipleChoice = {
-      title: "Q" + (questions.length + 1),
-      type: "MultipleChoice",
-
-      points: 4,
-      question: 'New question',
-      correctAnswer: "Example 1",
-      possibleAnswers: ['Example 1', 'Example 2', 'Example 3', 'Example 4']
-    };
-    setQuestions([...questions, newQuestion]);
-    // setEditingQuestion(newQuestion as Question);
-
+  const defaultQuestion: MultipleChoice = {
+    title: "Q" + (questions.length + 1),
+    type: "MultipleChoice",
+    points: 4,
+    question: 'New question',
+    correctAnswer: "Example 1",
+    possibleAnswers: ['Example 1', 'Example 2', 'Example 3', 'Example 4']
   };
 
+  const [editingQuestion, setEditingQuestion] = useState<any>(defaultQuestion);
+  const [questionType, setQuestionType] = useState('');
+  const [displayEditingQuestion, setDisplayEditingQuestion] = useState(false);
+  const [newQuestion, setNewQuestion] = useState(false);
+  const [questionContent, setQuestionContent] = useState('');
+  const [points, setPoints] = useState(0);
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [possibleAnswers, setPossibleAnswers] = useState<string[]>([]);
+  const [correctAnswers, setCorrectAnswers] = useState<string[]>([]);
+  const [MCEditingOption, setMCEditingOption] = useState('');
+
+
+
+  const handleNewQuestion = () => {
+    setQuestionType('multiple-choice');
+    setNewQuestion(true);
+    setEditingQuestion(defaultQuestion);
+    setDisplayEditingQuestion(true);
+  };
+
+  const handleChangeMCOption = (e: any, editingQuestion: MultipleChoice) => {
+    const currPossibleAnswers = editingQuestion.possibleAnswers;
+    const newAnswers = currPossibleAnswers.map(item => item !== MCEditingOption ? item : e.target.value);
+    setMCEditingOption(e.target.value);
+    editingQuestion.possibleAnswers = newAnswers;
+    setPossibleAnswers(newAnswers);
+  }
+
   const handleEditQuestion = (question: any) => {
-    setQuestions(questions.filter((qs) => qs.title !== question.title))
+    setQuestions(questions.filter((qs) => qs.title !== question.title));
+    setQuestionContent(question.question);
+    setPoints(question.points);
     setEditingQuestion(question);
+    setDisplayEditingQuestion(true);
+    setPossibleAnswers((question as MultipleChoice).possibleAnswers)
+    setNewQuestion(false);
     setQuestionType(getQuestionType(question));
   };
 
   const handleCancelEdit = (question: any) => {
-    setQuestions([...questions, question]);
-    setEditingQuestion(null);
+    if (!newQuestion) {
+      setQuestions([...questions, question]);
+    }
+    setEditingQuestion(defaultQuestion);
+    setDisplayEditingQuestion(false);
   };
 
-  const handleSaveQuestion = (updatedQuestion: any) => {
-    const updatedQuestions = questions.map((q: any) =>
-      q.id === updatedQuestion.id ? updatedQuestion : q
-    );
-    setQuestions([...questions, updatedQuestion]);
-    setEditingQuestion(null);
+  const handleSaveQuestion = (title: string) => {
+    if (questionType === 'multiple-choice') {
+      let updatedQuestion: MultipleChoice = {
+        title: title,
+        type: "MultipleChoice",
+        points: points,
+        question: questionContent,
+        correctAnswer: correctAnswer,
+        possibleAnswers: possibleAnswers
+      }
+      console.log(updatedQuestion)
+      setQuestions([...questions, updatedQuestion]);
+      }
+    else if (questionType === 'true-false') {
+      let updatedQuestion: TrueFalse = {
+        title: title,
+        type: "TrueFalse",
+        points: points,
+        question: questionContent,
+        correctAnswer: Boolean(correctAnswer),
+      }
+      setQuestions([...questions, updatedQuestion]);
+    } else {
+      let updatedQuestion: FillInBlank = {
+        title: title,
+        type: "FillInBlank",
+        points: points,
+        question: questionContent,
+        correctAnswers: correctAnswers,
+      }
+      setQuestions([...questions, updatedQuestion]);
+    }
+
+    setQuestionContent('');
+    setPoints(0);
+    setCorrectAnswer('');
+    setPossibleAnswers([]);
+    setCorrectAnswers([]);
+    setEditingQuestion(defaultQuestion);
+    setDisplayEditingQuestion(false);
   };
+
+  const handleMCRemoveOption = (optionToRemove: string) => {
+    console.log(optionToRemove);
+    const updatedPossibleAnswers = (editingQuestion as MultipleChoice).possibleAnswers.filter(
+      (option) => option !== optionToRemove
+    );
+    const updatedEditingQuestion = { ...(editingQuestion as MultipleChoice), possibleAnswers: updatedPossibleAnswers };
+    setEditingQuestion(updatedEditingQuestion);
+    setPossibleAnswers(updatedPossibleAnswers);
+  }
+
+  const handleFIBRemoveOption = (optionToRemove: string) => {
+    console.log(optionToRemove);
+    const updatedCorrectAnswers = (editingQuestion as FillInBlank).correctAnswers.filter(
+      (option) => option !== optionToRemove
+    );
+    const updatedEditingQuestion = { ...(editingQuestion as FillInBlank), correctAnswers: updatedCorrectAnswers };
+    setEditingQuestion(updatedEditingQuestion);
+    setCorrectAnswers(updatedCorrectAnswers);
+  }
+
+  const handleFIBAddOption = () => {
+    const newOption = 'New Option';
+    const updatedCorrectAnswers = [...(editingQuestion as FillInBlank).correctAnswers, newOption];
+    const updatedEditingQuestion = { ...(editingQuestion as MultipleChoice), correctAnswers: updatedCorrectAnswers };
+    setEditingQuestion(updatedEditingQuestion);
+    setCorrectAnswers(updatedCorrectAnswers);
+  };
+
+  const handleMCAddOption = () => {
+    const newOption = 'New Option';
+    const updatedPossibleAnswers = [...(editingQuestion as MultipleChoice).possibleAnswers, newOption];
+    const updatedEditingQuestion = { ...(editingQuestion as MultipleChoice), possibleAnswers: updatedPossibleAnswers };
+    setEditingQuestion(updatedEditingQuestion);
+    setPossibleAnswers(updatedPossibleAnswers);
+  };
+
+  const handleFIBOptionChange = (e: any, optionValue: string, currCorrectAnswers: string[]) => {
+    setCorrectAnswers(currCorrectAnswers);
+    const newCorrectAnswers = [...correctAnswers];
+    const index = newCorrectAnswers.indexOf(optionValue);
+    if (index !== -1) {
+      newCorrectAnswers[index] = e.target.value;
+      setCorrectAnswers(newCorrectAnswers);
+    };
+    console.log(correctAnswers);
+  };
+
+  const handleChangeQuestionType = (e: any) => {
+    const type = e.target.value; 
+    if (type === 'multiple-choice') {
+      setPossibleAnswers(["Example 1", "Example 2", "Example 3", "Example 4"]);
+    } else if (type === 'true-false') {
+
+    } else if (type === 'fill-blanks') {
+      setCorrectAnswers(["Example 1", "Example 2", "Example 3", "Example 4"]);
+    }
+    setQuestionType(e.target.value);
+  }
 
   const handlePublishQuiz = () => {
     // Implement logic to publish the quiz
@@ -78,11 +200,15 @@ const QuizQuestionsEditor = () => {
     <>
       <div>
       <h1>Quiz Questions</h1>
+      { (questions.length === 0) && (
+        <h3>No questions added yet.</h3>
+      )} 
         {questions.map((question: Question) => (
           <div> <br />
             <div className="border">
               <h3>{question.title}</h3>
               <p className="fw-bold">{question.question}</p>
+              <p>Weight: {question.points} points</p>
               { (question as MultipleChoice).possibleAnswers !== undefined && (
                 <ul className="list-unstyled">
                   {(question as MultipleChoice).possibleAnswers.map((option) => (
@@ -124,13 +250,13 @@ const QuizQuestionsEditor = () => {
             </div>
         ))} <br />
 
-        {editingQuestion !== null && (
+        {displayEditingQuestion === true && (
           <div className="border">
             <h3>Edit Question {(editingQuestion as Question).title}</h3>
             <div>
               <select
                 value={questionType}
-                onChange={(e) => setQuestionType(e.target.value)}>
+                onChange={(e) => handleChangeQuestionType(e)}>
                 <option value="true-false">True False</option>
                 <option value="multiple-choice">Multiple Choice</option>
                 <option value="fill-blanks">Fill in Blank</option>
@@ -138,31 +264,39 @@ const QuizQuestionsEditor = () => {
             </div>
             <label>
               Question: 
-              <input type="text" defaultValue={(editingQuestion as Question).question}></input>
+              <input type="text" defaultValue={(editingQuestion as Question).question} onChange={(e) => setQuestionContent(e.target.value)}></input>
+            </label> <br />
+            <label>
+              Number of points: 
+              <input type="number" defaultValue={(editingQuestion as Question).points} onChange={(e) => setPoints(parseInt(e.target.value))}></input>
             </label> <br />
             <label>
               Select correct answer: 
             </label>
             { questionType === 'multiple-choice' && (
+              <div>
                 <ul className="list-unstyled">
-                  {defaultMCAnswers(editingQuestion).map((option) => (
-                    <li>
+                  {defaultMCAnswers(editingQuestion as Question).map((option) => (
+                    <li key={option}>
                       <label>
-                        <input type="radio" name={(editingQuestion as MultipleChoice).title} value={option} />
-                        <input type="text" defaultValue={option}></input>
+                        <input type="radio" name={(editingQuestion as MultipleChoice).title} value={option} onChange={(e) => setCorrectAnswer(e.target.value)}/>
+                        <input type="text" defaultValue={option} onClick={(e) => setMCEditingOption((e.target as HTMLInputElement).value)} onChange={(e) => handleChangeMCOption(e, editingQuestion)}></input>
+                        <button onClick={() => handleMCRemoveOption(option)}>Remove option</button>
                       </label>
                     </li>
                   ))}
                 </ul>
+                <button onClick={handleMCAddOption}>Add option</button>
+              </div>
             )}            
             { questionType === 'true-false' && (
               <div>
                 <label>
-                  <input value="true" type="radio" name={(editingQuestion as Question).title}></input>
+                  <input value="true" type="radio" name={(editingQuestion as Question).title} onChange={(e) => setCorrectAnswer(e.target.value)}></input>
                   True
                 </label> <br />
                 <label>
-                  <input value="false" type="radio" name={(editingQuestion as Question).title}></input>
+                  <input value="false" type="radio" name={(editingQuestion as Question).title} onChange={(e) => setCorrectAnswer(e.target.value)}></input>
                   False
                 </label>
                 <br/>                    
@@ -170,13 +304,21 @@ const QuizQuestionsEditor = () => {
             )}  
             { questionType === 'fill-blanks' && (
               <div>
-                <p className='fw-bold'>Please separate answers by a comma and space</p>
-                <input type="text" defaultValue={defaultFIBAnswers(editingQuestion)}></input>
-                <br/>
+                <ul className="list-unstyled">
+                  {getFIBChoices((editingQuestion as Question)).map((option) => (
+                    <li key={option}>
+                      <label>
+                        <input type="text" defaultValue={option} onChange={(e) => handleFIBOptionChange(e, option, (editingQuestion as FillInBlank).correctAnswers)}></input>
+                        <button onClick={() => handleFIBRemoveOption(option)}>Remove option</button>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={handleFIBAddOption}>Add option</button>
               </div>
             )}
-            <button onClick={() => handleCancelEdit(editingQuestion)}>Cancel</button>
-            <button onClick={handleSaveQuestion}>Save</button>
+            <button onClick={() => handleCancelEdit(editingQuestion as Question)}>Cancel</button>
+            <button onClick={() => handleSaveQuestion((editingQuestion as Question).title)}>Save</button>
           </div>
           )
         }
@@ -191,10 +333,5 @@ const QuizQuestionsEditor = () => {
   );
 };
 
-const QuestionEditor = () => {
-  // Implement question editor component
-  // { question, onCancel, onSave }
-  return <div>Question Editor</div>;
-};
 
 export default QuizQuestionsEditor;
