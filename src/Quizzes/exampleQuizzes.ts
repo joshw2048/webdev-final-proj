@@ -4,7 +4,6 @@ export const quizArray: Quiz[] = [
   {
     ...defaultQuizOptions,
     points: 0,
-    questions: [],
     name: 'Example Quiz 1 Available',
     showCorrectAnswers: false,
     course: '6612ef8b8940ac534a801439',
@@ -16,7 +15,6 @@ export const quizArray: Quiz[] = [
   {
     ...defaultQuizOptions,
     points: 0,
-    questions: [],
     name: 'Example Quiz 2 Closed',
     showCorrectAnswers: false,
     course: '6612ef8b8940ac534a801439',
@@ -29,7 +27,6 @@ export const quizArray: Quiz[] = [
   {
     ...defaultQuizOptions,
     points: 0,
-    questions: [],
     name: 'Example Quiz 3 Not Available Until',
     showCorrectAnswers: false,
     course: '6612ef8b8940ac534a801439',
@@ -44,6 +41,7 @@ export const questionArray: Question[] = [
   {
     title: "Q1",
     type: "MultipleChoice",
+    quizId: '',
     points: 4,
     question: "What is the capital of France?",
     correctAnswer: "Paris",
@@ -52,6 +50,7 @@ export const questionArray: Question[] = [
   {
     title: "Q2",
     type: "TrueFalse",
+    quizId: '',
     points: 4,
     question: "The Earth is flat.",
     correctAnswer: false,
@@ -59,6 +58,7 @@ export const questionArray: Question[] = [
   {
     title: "Q3",
     type: "FillInBlank",
+    quizId: '',
     points: 4,
     question: "What is the capital of The United States?",
     correctAnswers: ["DC", "Washington DC", "Washington D.C."],

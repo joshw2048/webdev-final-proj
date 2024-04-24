@@ -6,6 +6,7 @@ import { useState } from "react"
 import './index.css'
 import { Editor } from "@tinymce/tinymce-react";
 
+
 interface DetailsEditorProps {
   setQuiz: (quiz: Quiz) => void;
   quiz: Quiz;
@@ -23,7 +24,7 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
   return (
     <div className="m-2 p-2 px-3">
       <div className="d-flex justify-content-end my-2">
-        <p>{quiz.questions.map((question) => question.points).reduce((acc, val) => acc + val, 0)} points</p>
+        {/* <p>{quiz.questions.map((question) => question.points).reduce((acc, val) => acc + val, 0)} points</p> */}
         {quiz.published === false ? 
           <div className="mx-3"><FaRegTimesCircle />Not Published</div> : 
           <div className="mx-3"> <FaCheckCircle /> Published</div>}

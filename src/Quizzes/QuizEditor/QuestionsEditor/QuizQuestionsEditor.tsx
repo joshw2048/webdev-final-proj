@@ -1,14 +1,18 @@
 // same as quiz details, just won't have an ID associated with it sooo
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Question } from '../../types';
 import { MultipleChoice, TrueFalse, FillInBlank } from '../../types';
-import { defaultFIBAnswers, defaultMCAnswers, getFIBChoices, getQuestionType, parseFIBAnswers } from '../../utils';
+import { defaultMCAnswers, getFIBChoices, getQuestionType, questionsToJson } from '../../utils';
+import { Editor } from '@tinymce/tinymce-react';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 // temporary questions before we put stuff in the database
 let mc: MultipleChoice = {
   title: "Q1",
   type: "MultipleChoice",
+  quizId: '1',
   points: 4,
   question: "What is the capital of France?",
   correctAnswer: "Paris",
@@ -17,6 +21,7 @@ let mc: MultipleChoice = {
 let tf: TrueFalse = {
   title: "Q2",
   type: "TrueFalse",
+  quizId: '1',
   points: 4,
   question: "The Earth is flat.",
   correctAnswer: false,
@@ -24,6 +29,7 @@ let tf: TrueFalse = {
 let fib: FillInBlank = {
   title: "Q3",
   type: "FillInBlank",
+  quizId: '1',
   points: 4,
   question: "What is the capital of The United States?",
   correctAnswers: ["DC", "Washington DC", "Washington D.C."],
@@ -38,6 +44,7 @@ const QuizQuestionsEditor = () => {
   const defaultQuestion: MultipleChoice = {
     title: "Q" + (questions.length + 1),
     type: "MultipleChoice",
+    quizId: '',
     points: 4,
     question: 'New question',
     correctAnswer: "Example 1",
@@ -56,7 +63,23 @@ const QuizQuestionsEditor = () => {
   const [correctAnswers, setCorrectAnswers] = useState<string[]>([]);
   const [MCEditingOption, setMCEditingOption] = useState('');
 
+  const API_BASE = process.env.REACT_APP_API_BASE;
+  const api = axios.create({
+    withCredentials: true
+  });
+  
+  const QUIZZES_API = `${API_BASE}/api/courses`;
+  const location = useLocation();
+  const pathParts = location.pathname.split('/'); 
+  const quizIndex = pathParts.indexOf('Quizzes');
+  const quizId = pathParts[quizIndex + 1] || 'No quiz ID';
 
+  const findAllCourses = async () => {
+    const response = await api.get(`${QUIZZES_API}/quizzes/${quizId}/questions`);
+  };
+  useEffect(() => {
+    findAllCourses();
+  }, []);
 
   const handleNewQuestion = () => {
     setQuestionType('multiple-choice');
@@ -75,6 +98,7 @@ const QuizQuestionsEditor = () => {
 
   const handleEditQuestion = (question: any) => {
     setQuestions(questions.filter((qs) => qs.title !== question.title));
+    setTitle(question.title);
     setQuestionContent(question.question);
     setPoints(question.points);
     setEditingQuestion(question);
@@ -97,6 +121,7 @@ const QuizQuestionsEditor = () => {
       let updatedQuestion: MultipleChoice = {
         title: title,
         type: "MultipleChoice",
+        quizId: quizId,
         points: points,
         question: questionContent,
         correctAnswer: correctAnswer,
@@ -109,6 +134,7 @@ const QuizQuestionsEditor = () => {
       let updatedQuestion: TrueFalse = {
         title: title,
         type: "TrueFalse",
+        quizId: quizId,
         points: points,
         question: questionContent,
         correctAnswer: Boolean(correctAnswer),
@@ -118,6 +144,7 @@ const QuizQuestionsEditor = () => {
       let updatedQuestion: FillInBlank = {
         title: title,
         type: "FillInBlank",
+        quizId: quizId,
         points: points,
         question: questionContent,
         correctAnswers: correctAnswers,
@@ -197,6 +224,13 @@ const QuizQuestionsEditor = () => {
     // Implement logic to publish the quiz
   };
 
+  const handleSaveQuiz = async () => {
+    // we have to package questions into a json
+    const jsonQuestions = questionsToJson(questions);
+    const response = await api.post(`${QUIZZES_API}/quizzes/${quizId}/questions`, jsonQuestions);
+    console.log(response);
+  };
+
   return (
     <>
       <div>
@@ -208,7 +242,7 @@ const QuizQuestionsEditor = () => {
           <div> <br />
             <div className="border">
               <h3>{question.title}</h3>
-              <p className="fw-bold">{question.question}</p>
+              <p dangerouslySetInnerHTML={{ __html: question.question }} />              
               <p>Weight: {question.points} points</p>
               { (question as MultipleChoice).possibleAnswers !== undefined && (
                 <ul className="list-unstyled">
@@ -269,7 +303,15 @@ const QuizQuestionsEditor = () => {
             </div>
             <label>
               Question: 
-              <input type="text" defaultValue={(editingQuestion as Question).question} onChange={(e) => setQuestionContent(e.target.value)}></input>
+              <Editor 
+                apiKey="kzaz9q6p91bsbhvej8056yz0r9mtzu36bihtmfwfvcxbyxqx"
+                onEditorChange={(newValue, _) => {
+                  console.log(newValue);
+                  console.log(_)
+                  setQuestionContent(newValue);
+                }}
+                value={questionContent}
+              />
             </label> <br />
             <label>
               Number of points: 
@@ -331,7 +373,7 @@ const QuizQuestionsEditor = () => {
 
     <br/>
       <button onClick={handleNewQuestion}>New Question</button>
-      <button>Save</button>
+      <button onClick={handleSaveQuiz}>Save</button>
       <button onClick={handlePublishQuiz}>Save &amp; Publish</button>
     </>
   );
