@@ -1,6 +1,6 @@
 import { FillInBlank, MultipleChoice, Question, Quiz, TrueFalse } from "./types";
 
-export const translateBooleanToStringValue = (bool: boolean) => bool ? "Yes" : "No";
+export const translateBooleanToStringValue = (bool: boolean | undefined) => bool ? "Yes" : "No";
 
 export const createAvailabilityText = (quiz: Quiz) => {
   const currentDate = new Date();
@@ -56,7 +56,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quiz: question.quiz,
         points: question.points,
         question: question.question,
         correctAnswer: mcQuestion.correctAnswer,
@@ -70,7 +70,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quiz: question.quiz,
         points: question.points,
         question: question.question,
         correctAnswer: tfQuestion.correctAnswer,
@@ -83,7 +83,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quiz: question.quiz,
         points: question.points,
         question: question.question,
         correctAnswers: fibQuestion.correctAnswers,

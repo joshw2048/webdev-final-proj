@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Quiz, defaultQuizOptions } from "../../types";
 import { DetailsEditor } from "./DetailsEditor";
-
+import * as client from "../../client"
 
 // todo: change this to have initial state of the quiz at this id
 export const QuizDetailsEditor = () => {
@@ -21,17 +21,24 @@ export const QuizDetailsEditor = () => {
     course: courseId ?? '',
   });
 
-  const saveAndPublish = (quiz: Quiz) => {
-    console.log(quiz);
-    console.log("saving and publishing")
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+  const saveAndPublish = async () => {
+    try {
+      await client.updateQuiz({...quiz, published: true});
+      console.log("details editor save and publish", quiz)
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
+    } catch (error) {
+      alert("could not update quiz");
+    }
   }
 
-  const save = (quiz: Quiz) => {
-    console.log(quiz);
-    console.log("saving only")
-    // todo: get quiz id upon post and navigate to quiz details
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+  const save = async () => {
+    try {
+      await client.updateQuiz(quiz);
+      console.log("details editor save", quiz)
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+    } catch (error) {
+      alert("could not update quiz");
+    }
   }
 
   return(

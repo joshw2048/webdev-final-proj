@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Quiz, defaultQuizOptions } from "../../types";
 import { DetailsEditor } from "./DetailsEditor";
+import * as client from "../../client"
 
 export const QuizDetailsCreator = () => {
   const { courseId } = useParams();
@@ -18,17 +19,24 @@ export const QuizDetailsCreator = () => {
     course: courseId ?? '',
   });
 
-  const saveAndPublish = (quiz: Quiz) => {
-    console.log(quiz);
-    console.log("saving and publishing")
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+  const saveAndPublish = async () => {
+    try {
+      await client.createQuiz(quiz);
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+    } catch (error) {
+      alert("could not create quiz");
+    }
   }
 
-  const save = (quiz: Quiz) => {
-    console.log(quiz);
-    console.log("saving only")
+  const save = async () => {
+    try {
+      const test = await client.createQuiz(quiz);
+      console.log(test, "do i get a quiz object back...")
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+    } catch (error) {
+      alert("could not create quiz");
+    }
     // todo: get quiz id upon post and navigate to quiz details
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
   }
 
   return(

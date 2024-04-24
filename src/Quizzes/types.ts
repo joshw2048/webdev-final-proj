@@ -35,14 +35,14 @@ export const defaultQuizOptions: DefaultQuizOptions = {
   webcamRequired: false,
   lockQuestionsAfterAnswering: false,
   published: false,
-  instructions: '',
+  instructions: "",
 }
 
 type QuestionType = "MultipleChoice" | "TrueFalse" | "FillInBlank";
 
 interface BaseQuestion {
   type: QuestionType;
-  quizId: string
+  quiz: string
   title: string;
   points: number;
   question: string;

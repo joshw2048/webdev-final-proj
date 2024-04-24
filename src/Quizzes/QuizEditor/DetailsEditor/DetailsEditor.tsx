@@ -1,6 +1,6 @@
 
 import { AssignmentGroup, Quiz, QuizType, defaultQuizOptions } from "../../types"
-import { FaCheckCircle, FaEllipsisV, FaPlane, FaPlusCircle, FaRegTimesCircle, FaPlus } from "react-icons/fa";
+import { FaCheckCircle, FaRegTimesCircle, FaPlus } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react"
 import './index.css'
@@ -10,8 +10,8 @@ import { Editor } from "@tinymce/tinymce-react";
 interface DetailsEditorProps {
   setQuiz: (quiz: Quiz) => void;
   quiz: Quiz;
-  saveAndPublish: (quiz: Quiz) => void;
-  save: (quiz: Quiz) => void;
+  saveAndPublish: () => void;
+  save: () => void;
 }
 
 export const DetailsEditor = (props: DetailsEditorProps) => {
@@ -19,12 +19,10 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
   const navigate = useNavigate();
   const { courseId } = useParams();
 
-
-  console.log("idk", quiz.published)
   return (
     <div className="m-2 p-2 px-3">
       <div className="d-flex justify-content-end my-2">
-        {/* <p>{quiz.questions.map((question) => question.points).reduce((acc, val) => acc + val, 0)} points</p> */}
+        <p>{quiz.points} points</p>
         {quiz.published === false ? 
           <div className="mx-3"><FaRegTimesCircle />Not Published</div> : 
           <div className="mx-3"> <FaCheckCircle /> Published</div>}
@@ -55,6 +53,15 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
           <option value="Graded Survey">Graded Survey</option>
           <option value="Ungraded Survey">Ungraded Survey</option>
         </select>
+        <div className="d-flex gap-2">
+          <input 
+            name="points"
+            type="number" 
+            value={quiz.points} 
+            onChange={(e) => setQuiz({...quiz, points: e.target.value !== "" ? Number(e.target.value) : 0})}
+          />
+          <label htmlFor="multipleAttempts">Allow multiple attempts</label>
+        </div>
         <select 
           className="form-select" 
           defaultValue={"Quizzes"} 
@@ -179,8 +186,8 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
         <button className="btn btn-light" onClick={() => {
           navigate(`/Kanbas/Courses/${courseId}/Quizzes/`)
         }}>Cancel</button>
-        <button className="btn btn-light" onClick={() => saveAndPublish(quiz)}>Save and Publish</button>
-        <button className="btn btn-danger" onClick={() => save(quiz)}>Save</button>
+        <button className="btn btn-light" onClick={() => saveAndPublish()}>Save and Publish</button>
+        <button className="btn btn-danger" onClick={() => save()}>Save</button>
       </div>
     </div>
   )
