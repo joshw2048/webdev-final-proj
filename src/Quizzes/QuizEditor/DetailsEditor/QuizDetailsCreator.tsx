@@ -11,7 +11,6 @@ export const QuizDetailsCreator = () => {
     ...defaultQuizOptions, 
     name: "Unnamed Quiz", 
     points: 0,
-    questions: [],
     showCorrectAnswers: false,
     availableDate: new Date(),
     dueDate: new Date(),

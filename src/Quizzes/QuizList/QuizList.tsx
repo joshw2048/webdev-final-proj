@@ -12,6 +12,7 @@ export const QuizList = () => {
   const navigate = useNavigate();
 
   // TODO: Change this to use backend
+  // when you change this to use the backend and get all quizzes for a course, you'll need to then take the quizId and get the number of questions from the questions collection
   const quizzesList: Quiz[] = quizArray.filter((quiz) => quiz.course === courseId);
   const [quizzes, setQuizzes] = useState<Quiz[]>(quizzesList);
 
@@ -26,6 +27,7 @@ export const QuizList = () => {
     // backend connect
     setQuizzes([...quizzes.filter((quiz) => quiz._id !== id)])
   }
+
 
   return (
     <div className='assignments-container'>
@@ -67,7 +69,7 @@ export const QuizList = () => {
                           {quiz.name}
                         </Link>
                         <div>
-                          <span>{`${createAvailabilityText(quiz)}`}</span>
+                          <span>{`${createAvailabilityText(quiz, numQuestions)}`}</span>
                         </div>
                       </div>
                     </div>

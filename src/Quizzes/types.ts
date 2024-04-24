@@ -4,6 +4,7 @@ export type AssignmentGroup = "Quizzes" | "Exams" | "Assignments" | "Project";
 export interface BaseQuiz {
   quizType: QuizType;
   points: number;
+  numQuestions: number,
   assignmentGroup: AssignmentGroup;
   shuffleAnswers: boolean;
   timeLimit?: number; // in minutes
@@ -24,6 +25,7 @@ type DefaultQuizOptions = Omit<BaseQuiz, "points" | "showCorrectAnswers" | "dueD
 
 export const defaultQuizOptions: DefaultQuizOptions = {
   quizType: "Graded Quiz",
+  numQuestions: 0,
   assignmentGroup: "Quizzes",
   shuffleAnswers: true,
   timeLimit: 20,
@@ -40,6 +42,7 @@ type QuestionType = "MultipleChoice" | "TrueFalse" | "FillInBlank";
 
 interface BaseQuestion {
   type: QuestionType;
+  quizId: string
   title: string;
   points: number;
   question: string;
@@ -64,5 +67,4 @@ export interface Quiz extends BaseQuiz {
   _id?: string;
   name: string;
   course: string;
-  questions: Question[];
 }
