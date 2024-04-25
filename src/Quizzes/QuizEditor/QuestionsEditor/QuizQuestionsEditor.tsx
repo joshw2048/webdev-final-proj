@@ -65,12 +65,18 @@ const QuizQuestionsEditor = () => {
   const [editingPossibleAnswers, setEditingPossibleAnswers] = useState<string[]>([]);
   const [editingCorrectAnswers, setEditingCorrectAnswers] = useState<string[]>([]);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [newOptionCount, setNewOptionCount] = useState(1);
 
   const navigate = useNavigate();
 
 
   const handleNewQuestion = () => {
     setQuestionType('multiple-choice');
+    setTitle(defaultQuestion.title);
+    setPoints(defaultQuestion.points);
+    setQuestionContent(defaultQuestion.question);
+    setPossibleAnswers(defaultQuestion.possibleAnswers);
+    setCorrectAnswers(["Example 1", "Example 2", "Example 3", "Example 4"]);
     setNewQuestion(true);
     setEditingQuestion(defaultQuestion);
     setDisplayEditingQuestion(true);
@@ -182,18 +188,20 @@ const QuizQuestionsEditor = () => {
   }
 
   const handleFIBAddOption = () => {
-    const newOption = 'New Option';
+    const newOption = 'New Option ' + newOptionCount;
     console.log((editingQuestion as FillInBlank).correctAnswers);
     const updatedCorrectAnswers = [...(editingQuestion as FillInBlank).correctAnswers, newOption];
     const updatedEditingQuestion = { ...(editingQuestion as FillInBlank), correctAnswers: updatedCorrectAnswers };
+    setNewOptionCount(newOptionCount + 1);
     setEditingQuestion(updatedEditingQuestion);
     setCorrectAnswers(updatedCorrectAnswers);
   };
 
   const handleMCAddOption = () => {
-    const newOption = 'New Option';
+    const newOption = 'New Option ' + newOptionCount;
     const updatedPossibleAnswers = [...(editingQuestion as MultipleChoice).possibleAnswers, newOption];
     const updatedEditingQuestion = { ...(editingQuestion as MultipleChoice), possibleAnswers: updatedPossibleAnswers };
+    setNewOptionCount(newOptionCount + 1);
     setEditingQuestion(updatedEditingQuestion);
     setPossibleAnswers(updatedPossibleAnswers);
   };
