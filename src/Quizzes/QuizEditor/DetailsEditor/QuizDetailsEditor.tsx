@@ -1,30 +1,35 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Quiz, defaultQuizOptions } from "../../types";
 import { DetailsEditor } from "./DetailsEditor";
 import * as client from "../../client"
+import { quizArray } from "../../exampleQuizzes";
 
 // todo: change this to have initial state of the quiz at this id
 export const QuizDetailsEditor = () => {
   const { courseId, quizId } = useParams();
   const navigate = useNavigate();
 
-  // initial state will be us fetching the quiz
-  const [quiz, setQuiz] = useState<Quiz>({
-    ...defaultQuizOptions, 
-    name: "Unnamed Quiz", 
-    points: 0,
-    showCorrectAnswers: false,
-    availableDate: new Date(),
-    dueDate: new Date(),
-    untilDate: new Date(),
-    course: courseId ?? '',
-  });
+  const [quiz, setQuiz] = useState<Quiz>(quizArray[0]);
+
+  const findQuiz = async () => {
+    const q = await client.findQuizById(quizId ?? '1');
+    const parsedDatesQuiz: Quiz = {
+      ...q,
+      availableDate: new Date(q.availableDate),
+      untilDate: new Date(q.untilDate),
+      dueDate: new Date(q.dueDate),
+    }
+    setQuiz(parsedDatesQuiz);
+  }
+
+  useEffect(() => {
+    findQuiz();
+  }, []);
 
   const saveAndPublish = async () => {
     try {
       await client.updateQuiz({...quiz, published: true});
-      console.log("details editor save and publish", quiz)
       navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
     } catch (error) {
       alert("could not update quiz");
@@ -34,7 +39,6 @@ export const QuizDetailsEditor = () => {
   const save = async () => {
     try {
       await client.updateQuiz(quiz);
-      console.log("details editor save", quiz)
       navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
     } catch (error) {
       alert("could not update quiz");

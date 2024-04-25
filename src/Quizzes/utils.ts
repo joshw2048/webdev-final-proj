@@ -5,17 +5,20 @@ export const translateBooleanToStringValue = (bool: boolean | undefined) => bool
 export const createAvailabilityText = (quiz: Quiz) => {
   const currentDate = new Date();
   const { untilDate, availableDate, dueDate, points } = quiz;
+  const convertedUntilDate = new Date(untilDate);
+  const convertedAvailDate = new Date(availableDate);
+  const convertedDueDate = new Date(dueDate);
   let availabilityString;
 
-  if (currentDate > untilDate) {
+  if (currentDate > convertedUntilDate) {
     availabilityString = "Closed";
-  } else if (currentDate < availableDate) {
-    availabilityString = `Not available until ${availableDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`;
+  } else if (currentDate < convertedAvailDate) {
+    availabilityString = `Not available until ${convertedAvailDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`;
   } else {
     availabilityString = "Available";
   }
 
-  const dueString = ` | Due ${dueDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})} | ${points} pts | ${quiz.numQuestions} Questions`;
+  const dueString = ` | Due ${convertedDueDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})} | ${points} pts | ${quiz.numQuestions} Questions`;
 
   return availabilityString + dueString;
 }

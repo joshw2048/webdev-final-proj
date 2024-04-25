@@ -45,7 +45,7 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
         />
         <select 
           className="form-select" 
-          defaultValue="Graded Quiz" 
+          value={quiz.quizType} 
           onChange={(e) => setQuiz({...quiz, quizType: e.target.value as QuizType })}
         >
           <option value="Graded Quiz">Graded Quiz</option>
@@ -54,13 +54,13 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
           <option value="Ungraded Survey">Ungraded Survey</option>
         </select>
         <div className="d-flex gap-2">
+          <label htmlFor="multipleAttempts">Points</label>
           <input 
             name="points"
             type="number" 
             value={quiz.points} 
             onChange={(e) => setQuiz({...quiz, points: e.target.value !== "" ? Number(e.target.value) : 0})}
           />
-          <label htmlFor="multipleAttempts">Allow multiple attempts</label>
         </div>
         <select 
           className="form-select" 
@@ -93,7 +93,7 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
             className="form-control w-25"
             type="number"
             id="quiz-time-limit"
-            value="20"
+            value={quiz.timeLimit}
             onChange={(e) => setQuiz({...quiz, timeLimit: e.target.value !== "" ? Number(e.target.value) : undefined})}
           />
           <label htmlFor="quiz-time-limit">Minutes</label>

@@ -17,7 +17,6 @@ export const QuizList = () => {
 
   const findAllQuestionsForQuiz = async () => {
     const quizList = await client.findQuizzesForCourse(courseId ?? '1');
-    console.log("quizList ", quizList)
     setQuizzes(quizList as Quiz[]);
   }
 

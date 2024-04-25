@@ -1,6 +1,6 @@
 // same as quiz details, just won't have an ID associated with it sooo
 import { useState } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Quiz, defaultQuizOptions } from "../../types";
 import { DetailsEditor } from "./DetailsEditor";
 import * as client from "../../client"
@@ -30,13 +30,11 @@ export const QuizDetailsCreator = () => {
 
   const save = async () => {
     try {
-      const test = await client.createQuiz(quiz);
-      console.log(test, "do i get a quiz object back...")
-      navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+      const newlyCreatedQuiz = await client.createQuiz(quiz);
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes/${newlyCreatedQuiz._id}`);
     } catch (error) {
       alert("could not create quiz");
     }
-    // todo: get quiz id upon post and navigate to quiz details
   }
 
   return(

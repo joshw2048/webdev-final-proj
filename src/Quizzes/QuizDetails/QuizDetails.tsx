@@ -14,14 +14,15 @@ export const QuizDetails = () => {
   const [quiz, setQuiz] = useState<Quiz>(quizArray[0]);
 
   const findQuiz = async () => {
-    const quiz = await client.findQuizById(quizId ?? '1');
-    setQuiz(quiz);
+    const q = await client.findQuizById(quizId ?? '1');
+    setQuiz(q);
   }
 
   const updateQuizPublished = async (publishedValue: boolean) => {
     try {
-      await client.updateQuiz(quiz);
-      setQuiz({ ...quiz, published: publishedValue})
+      const updatedQuiz: Quiz = {...quiz, published: publishedValue}
+      await client.updateQuiz(updatedQuiz);
+      setQuiz(updatedQuiz)
     } catch (error) {
 
     }
@@ -117,10 +118,10 @@ export const QuizDetails = () => {
         </thead>
         <tbody>
           <tr>
-            <td>{`${quiz?.dueDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`}</td>
+            <td>{`${new Date(quiz?.dueDate).toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`}</td>
             <td>Everyone</td>
-            <td>{`${quiz?.availableDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`}</td>
-            <td>{`${quiz?.untilDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`}</td>
+            <td>{`${new Date(quiz?.availableDate).toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`}</td>
+            <td>{`${new Date(quiz?.untilDate).toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`}</td>
           </tr>
         </tbody>
       </table>

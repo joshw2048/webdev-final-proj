@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Quiz } from "./types";
 export const BASE_API = process.env.REACT_APP_API_BASE;
-export const QUIZZES_API = `${BASE_API}/api/courses/quizzes`;
+export const QUIZZES_API = `${BASE_API}/api/quizzes`;
 
 const api = axios.create({
   withCredentials: true
@@ -13,7 +13,7 @@ export const updateQuiz = async (quiz: Quiz) => {
 };
 
 export const findQuizzesForCourse = async (courseId: string) => {
-  const response = await api.get(`${QUIZZES_API}/${courseId}`);
+  const response = await api.get(`${QUIZZES_API}/courses/${courseId}`);
   return response.data;
 };
 
@@ -29,11 +29,12 @@ export const deleteQuiz = async (quizId: string) => {
 };
 
 export const findQuizById = async (id: string) => {
+  const url = `${QUIZZES_API}/${id}`
   const response = await api.get(`${QUIZZES_API}/${id}`);
   return response.data;
 };
 
 export const findAllQuestionsForQuiz = async (quizId: string) => {
-  const response = await api.get(`${QUIZZES_API}/quizzes/${quizId}/questions`);
+  const response = await api.get(`${BASE_API}/api/courses/quizzes/${quizId}/questions`);
   return response.data;
 }

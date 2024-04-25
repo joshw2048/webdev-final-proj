@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Question } from "../types";
 import { QuestionPreview } from "./QuestionPreview";
-import { questionArray } from "../exampleQuizzes";
 import { FaInfoCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import * as client from '../client'
