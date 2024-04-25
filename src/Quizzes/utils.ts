@@ -56,7 +56,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quizId: question.quizId,
         points: question.points,
         question: question.question,
         correctAnswer: mcQuestion.correctAnswer,
@@ -70,7 +70,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quizId: question.quizId,
         points: question.points,
         question: question.question,
         correctAnswer: tfQuestion.correctAnswer,
@@ -83,7 +83,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quizId: question.quizId,
         points: question.points,
         question: question.question,
         correctAnswers: fibQuestion.correctAnswers,
@@ -95,4 +95,49 @@ export const questionsToJson = (questions: Question[]) => {
   }
 
   return jsonQuestions;
+};
+
+export const jsonToQuestions = (jsonQuestions: any[]): Question[] => {
+  const questions: Question[] = [];
+
+  for (const jsonQuestion of jsonQuestions) {
+    switch (jsonQuestion.type) {
+      case 'MultipleChoice':
+        const mcQuestion: MultipleChoice = {
+          title: jsonQuestion.title,
+          type: 'MultipleChoice',
+          quizId: jsonQuestion.quiz,
+          points: jsonQuestion.points,
+          question: jsonQuestion.question,
+          correctAnswer: jsonQuestion.correctAnswer,
+          possibleAnswers: jsonQuestion.possibleAnswers,
+        };
+        questions.push(mcQuestion);
+        break;
+      case 'TrueFalse':
+        const tfQuestion: TrueFalse = {
+          title: jsonQuestion.title,
+          type: 'TrueFalse',
+          quizId: jsonQuestion.quiz,
+          points: jsonQuestion.points,
+          question: jsonQuestion.question,
+          correctAnswer: jsonQuestion.correctAnswer,
+        };
+        questions.push(tfQuestion);
+        break;
+      case 'FillInBlank':
+        const fibQuestion: FillInBlank = {
+          title: jsonQuestion.title,
+          type: 'FillInBlank',
+          quizId: jsonQuestion.quiz,
+          points: jsonQuestion.points,
+          question: jsonQuestion.question,
+          correctAnswers: jsonQuestion.correctAnswers,
+        };
+        questions.push(fibQuestion);
+        break;
+    }
+  }
+
+  return questions;
 };

@@ -69,7 +69,7 @@ export const QuizList = () => {
                           {quiz.name}
                         </Link>
                         <div>
-                          <span>{`${createAvailabilityText(quiz, numQuestions)}`}</span>
+                          <span>{`${createAvailabilityText(quiz)}`}</span>
                         </div>
                       </div>
                     </div>
