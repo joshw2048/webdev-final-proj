@@ -3,43 +3,43 @@
 import React, { useEffect, useState } from 'react';
 import { Question } from '../../types';
 import { MultipleChoice, TrueFalse, FillInBlank } from '../../types';
-import { defaultMCAnswers, getFIBChoices, getQuestionType, questionsToJson } from '../../utils';
+import { defaultMCAnswers, getFIBChoices, getQuestionType, jsonToQuestions, questionsToJson } from '../../utils';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-
-// temporary questions before we put stuff in the database
-let mc: MultipleChoice = {
-  title: "Q1",
-  type: "MultipleChoice",
-  quiz: '1',
-  points: 4,
-  question: "What is the capital of France?",
-  correctAnswer: "Paris",
-  possibleAnswers: ["London", "Paris", "Berlin", "Rome"]
-}
-let tf: TrueFalse = {
-  title: "Q2",
-  type: "TrueFalse",
-  quiz: '1',
-  points: 4,
-  question: "The Earth is flat.",
-  correctAnswer: false,
-}
-let fib: FillInBlank = {
-  title: "Q3",
-  type: "FillInBlank",
-  quiz: '1',
-  points: 4,
-  question: "What is the capital of The United States?",
-  correctAnswers: ["DC", "Washington DC", "Washington D.C."],
-}
-const sampleQuestions = [mc, tf, fib];
+import { useNavigate } from 'react-router-dom';
 
 
 
 const QuizQuestionsEditor = () => {
-  const [questions, setQuestions] = useState(sampleQuestions);
+  const API_BASE = process.env.REACT_APP_API_BASE;
+  const api = axios.create({
+    withCredentials: true
+  });
+  
+  const QUIZZES_API = `${API_BASE}/api/courses`;
+  const location = useLocation();
+  const pathParts = location.pathname.split('/'); 
+  const quizIndex = pathParts.indexOf('Quizzes');
+  const courseIndex = pathParts.indexOf('Courses');
+  const courseId = pathParts[courseIndex + 1];
+  const quizId = pathParts[quizIndex + 1];
+  let dbQuestions: Question[] = [];
+
+  const findAllQuestions = async () => {
+    const response = await api.get(`${QUIZZES_API}/quizzes/${quizId}/questions`);
+    dbQuestions = jsonToQuestions(response.data.questions);
+    const totalPoints = dbQuestions.reduce((total, question) => {
+      return total + question.points;
+    }, 0);
+    setTotalPoints(totalPoints);
+    setQuestions(dbQuestions);
+  };
+  useEffect(() => {
+    findAllQuestions();
+  }, []);
+  
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   const defaultQuestion: MultipleChoice = {
     title: "Q" + (questions.length + 1),
@@ -62,24 +62,12 @@ const QuizQuestionsEditor = () => {
   const [possibleAnswers, setPossibleAnswers] = useState<string[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState<string[]>([]);
   const [MCEditingOption, setMCEditingOption] = useState('');
+  const [editingPossibleAnswers, setEditingPossibleAnswers] = useState<string[]>([]);
+  const [editingCorrectAnswers, setEditingCorrectAnswers] = useState<string[]>([]);
+  const [totalPoints, setTotalPoints] = useState(0);
 
-  const API_BASE = process.env.REACT_APP_API_BASE;
-  const api = axios.create({
-    withCredentials: true
-  });
-  
-  const QUIZZES_API = `${API_BASE}/api/courses`;
-  const location = useLocation();
-  const pathParts = location.pathname.split('/'); 
-  const quizIndex = pathParts.indexOf('Quizzes');
-  const quizId = pathParts[quizIndex + 1] || 'No quiz ID';
+  const navigate = useNavigate();
 
-  const findAllQuestions = async () => {
-    const response = await api.get(`${QUIZZES_API}/quizzes/${quizId}/questions`);
-  };
-  useEffect(() => {
-    findAllQuestions();
-  }, []);
 
   const handleNewQuestion = () => {
     setQuestionType('multiple-choice');
@@ -101,17 +89,28 @@ const QuizQuestionsEditor = () => {
     setTitle(question.title);
     setQuestionContent(question.question);
     setPoints(question.points);
+    setTotalPoints(totalPoints - question.points);
     setEditingQuestion(question);
     setDisplayEditingQuestion(true);
-    setPossibleAnswers((question as MultipleChoice).possibleAnswers)
+    setPossibleAnswers((question as MultipleChoice).possibleAnswers);
+    setEditingPossibleAnswers((question as MultipleChoice).possibleAnswers);
+    setCorrectAnswers((question as FillInBlank).correctAnswers);
+    setEditingCorrectAnswers((question as FillInBlank).correctAnswers);
     setNewQuestion(false);
     setQuestionType(getQuestionType(question));
   };
 
-  const handleCancelEdit = (question: any) => {
+  const handleCancelEdit = (question: Question) => {
+    if (question.type === 'MultipleChoice') {
+      (question as MultipleChoice).possibleAnswers = editingPossibleAnswers;
+    }
+    if (question.type === 'FillInBlank') {
+      (question as FillInBlank).correctAnswers = editingCorrectAnswers;
+    }
     if (!newQuestion) {
       setQuestions([...questions, question]);
     }
+    setTotalPoints(totalPoints + question.points);
     setEditingQuestion(defaultQuestion);
     setDisplayEditingQuestion(false);
   };
@@ -153,6 +152,7 @@ const QuizQuestionsEditor = () => {
     }
 
     setQuestionContent('');
+    setTotalPoints(totalPoints + points);
     setPoints(0);
     setCorrectAnswer('');
     setPossibleAnswers([]);
@@ -183,8 +183,9 @@ const QuizQuestionsEditor = () => {
 
   const handleFIBAddOption = () => {
     const newOption = 'New Option';
+    console.log((editingQuestion as FillInBlank).correctAnswers);
     const updatedCorrectAnswers = [...(editingQuestion as FillInBlank).correctAnswers, newOption];
-    const updatedEditingQuestion = { ...(editingQuestion as MultipleChoice), correctAnswers: updatedCorrectAnswers };
+    const updatedEditingQuestion = { ...(editingQuestion as FillInBlank), correctAnswers: updatedCorrectAnswers };
     setEditingQuestion(updatedEditingQuestion);
     setCorrectAnswers(updatedCorrectAnswers);
   };
@@ -216,19 +217,25 @@ const QuizQuestionsEditor = () => {
 
     } else if (type === 'fill-blanks') {
       setCorrectAnswers(["Example 1", "Example 2", "Example 3", "Example 4"]);
+      setEditingQuestion({ ...(editingQuestion as FillInBlank), correctAnswers: ["Example 1", "Example 2", "Example 3", "Example 4"] });
     }
     setQuestionType(e.target.value);
   }
 
-  const handlePublishQuiz = () => {
-    // Implement logic to publish the quiz
+  const handlePublishQuiz = async () => {
+    handleSaveQuiz(); 
+    const response = await api.put(`${QUIZZES_API}/quizzes/${quizId}/updateQuizPublish`);
   };
 
   const handleSaveQuiz = async () => {
-    // we have to package questions into a json
     const jsonQuestions = questionsToJson(questions);
-    const response = await api.post(`${QUIZZES_API}/quizzes/${quizId}/questions`, jsonQuestions);
-    console.log(response);
+    console.log(`${QUIZZES_API}/quizzes/${quizId}/questions`);
+    const response1 = await api.post(`${QUIZZES_API}/quizzes/${quizId}/questions`, jsonQuestions);
+
+    const jsonDetails = {points: totalPoints, numQuestions: questions.length};
+    const response2 = await api.put(`${QUIZZES_API}/quizzes/${quizId}/updatePointsAndNumQuestions`, jsonDetails);
+
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/edit`);
   };
 
   return (
@@ -244,7 +251,7 @@ const QuizQuestionsEditor = () => {
               <h3>{question.title}</h3>
               <p dangerouslySetInnerHTML={{ __html: question.question }} />              
               <p>Weight: {question.points} points</p>
-              { (question as MultipleChoice).possibleAnswers !== undefined && (
+              { question.type === "MultipleChoice" && (
                 <ul className="list-unstyled">
                   {(question as MultipleChoice).possibleAnswers.map((option) => (
                     <li>
@@ -256,7 +263,7 @@ const QuizQuestionsEditor = () => {
                   ))}
                 </ul>
                 )}
-              { (question as TrueFalse).correctAnswer !== undefined && (question as MultipleChoice).possibleAnswers === undefined && (
+              { question.type === "TrueFalse" && (
                   <div>
                   <label>
                     <input value="true" type="radio" name={question.title}></input>
@@ -270,7 +277,7 @@ const QuizQuestionsEditor = () => {
                   </div> 
                   )
               }
-              { (question as FillInBlank).correctAnswers !== undefined && (
+              { question.type === "FillInBlank" && (
                 <div>
                 <input type="textarea"></input>
                 <br/>
@@ -324,7 +331,7 @@ const QuizQuestionsEditor = () => {
               <div>
                 <ul className="list-unstyled">
                   {defaultMCAnswers(editingQuestion as Question).map((option) => (
-                    <li key={option}>
+                    <li> 
                       <label>
                         <input type="radio" name={(editingQuestion as MultipleChoice).title} value={option} onChange={(e) => setCorrectAnswer(e.target.value)}/>
                         <input type="text" defaultValue={option} onClick={(e) => setMCEditingOption((e.target as HTMLInputElement).value)} onChange={(e) => handleChangeMCOption(e, editingQuestion)}></input>
@@ -353,7 +360,7 @@ const QuizQuestionsEditor = () => {
               <div>
                 <ul className="list-unstyled">
                   {getFIBChoices((editingQuestion as Question)).map((option) => (
-                    <li key={option}>
+                    <li>
                       <label>
                         <input type="text" defaultValue={option} onChange={(e) => handleFIBOptionChange(e, option, (editingQuestion as FillInBlank).correctAnswers)}></input>
                         <button onClick={() => handleFIBRemoveOption(option)}>Remove option</button>
