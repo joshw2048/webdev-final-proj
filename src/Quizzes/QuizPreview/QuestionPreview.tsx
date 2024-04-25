@@ -71,7 +71,7 @@ export const QuestionPreview = (props: PreviewProps) => {
       </div>
       <div className="card-body">
         <div>
-          {question.question}
+          <div dangerouslySetInnerHTML={{ __html: question.question ?? "" }} />
         </div>
         <div>
           {displayAnswers(question)}

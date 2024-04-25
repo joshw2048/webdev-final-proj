@@ -54,13 +54,8 @@ export const DetailsEditor = (props: DetailsEditorProps) => {
           <option value="Ungraded Survey">Ungraded Survey</option>
         </select>
         <div className="d-flex gap-2">
-          <label htmlFor="multipleAttempts">Points</label>
-          <input 
-            name="points"
-            type="number" 
-            value={quiz.points} 
-            onChange={(e) => setQuiz({...quiz, points: e.target.value !== "" ? Number(e.target.value) : 0})}
-          />
+          <label htmlFor="points">Points</label>
+          {quiz.points}
         </div>
         <select 
           className="form-select" 
