@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 let mc: MultipleChoice = {
   title: "Q1",
   type: "MultipleChoice",
-  quizId: '1',
+  quiz: '1',
   points: 4,
   question: "What is the capital of France?",
   correctAnswer: "Paris",
@@ -21,7 +21,7 @@ let mc: MultipleChoice = {
 let tf: TrueFalse = {
   title: "Q2",
   type: "TrueFalse",
-  quizId: '1',
+  quiz: '1',
   points: 4,
   question: "The Earth is flat.",
   correctAnswer: false,
@@ -29,7 +29,7 @@ let tf: TrueFalse = {
 let fib: FillInBlank = {
   title: "Q3",
   type: "FillInBlank",
-  quizId: '1',
+  quiz: '1',
   points: 4,
   question: "What is the capital of The United States?",
   correctAnswers: ["DC", "Washington DC", "Washington D.C."],
@@ -44,7 +44,7 @@ const QuizQuestionsEditor = () => {
   const defaultQuestion: MultipleChoice = {
     title: "Q" + (questions.length + 1),
     type: "MultipleChoice",
-    quizId: '',
+    quiz: '',
     points: 4,
     question: 'New question',
     correctAnswer: "Example 1",
@@ -74,11 +74,11 @@ const QuizQuestionsEditor = () => {
   const quizIndex = pathParts.indexOf('Quizzes');
   const quizId = pathParts[quizIndex + 1] || 'No quiz ID';
 
-  const findAllCourses = async () => {
+  const findAllQuestions = async () => {
     const response = await api.get(`${QUIZZES_API}/quizzes/${quizId}/questions`);
   };
   useEffect(() => {
-    findAllCourses();
+    findAllQuestions();
   }, []);
 
   const handleNewQuestion = () => {
@@ -121,7 +121,7 @@ const QuizQuestionsEditor = () => {
       let updatedQuestion: MultipleChoice = {
         title: title,
         type: "MultipleChoice",
-        quizId: quizId,
+        quiz: quizId,
         points: points,
         question: questionContent,
         correctAnswer: correctAnswer,
@@ -134,7 +134,7 @@ const QuizQuestionsEditor = () => {
       let updatedQuestion: TrueFalse = {
         title: title,
         type: "TrueFalse",
-        quizId: quizId,
+        quiz: quizId,
         points: points,
         question: questionContent,
         correctAnswer: Boolean(correctAnswer),
@@ -144,7 +144,7 @@ const QuizQuestionsEditor = () => {
       let updatedQuestion: FillInBlank = {
         title: title,
         type: "FillInBlank",
-        quizId: quizId,
+        quiz: quizId,
         points: points,
         question: questionContent,
         correctAnswers: correctAnswers,

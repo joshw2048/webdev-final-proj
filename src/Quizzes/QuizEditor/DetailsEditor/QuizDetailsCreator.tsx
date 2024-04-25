@@ -1,8 +1,9 @@
 // same as quiz details, just won't have an ID associated with it sooo
 import { useState } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Quiz, defaultQuizOptions } from "../../types";
 import { DetailsEditor } from "./DetailsEditor";
+import * as client from "../../client"
 
 export const QuizDetailsCreator = () => {
   const { courseId } = useParams();
@@ -18,17 +19,22 @@ export const QuizDetailsCreator = () => {
     course: courseId ?? '',
   });
 
-  const saveAndPublish = (quiz: Quiz) => {
-    console.log(quiz);
-    console.log("saving and publishing")
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+  const saveAndPublish = async () => {
+    try {
+      await client.createQuiz(quiz);
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+    } catch (error) {
+      alert("could not create quiz");
+    }
   }
 
-  const save = (quiz: Quiz) => {
-    console.log(quiz);
-    console.log("saving only")
-    // todo: get quiz id upon post and navigate to quiz details
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/`);
+  const save = async () => {
+    try {
+      const newlyCreatedQuiz = await client.createQuiz(quiz);
+      navigate(`/Kanbas/Courses/${courseId}/Quizzes/${newlyCreatedQuiz._id}`);
+    } catch (error) {
+      alert("could not create quiz");
+    }
   }
 
   return(

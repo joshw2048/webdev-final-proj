@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Question } from "../types";
 import { QuestionPreview } from "./QuestionPreview";
-import { questionArray } from "../exampleQuizzes";
 import { FaInfoCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import * as client from '../client'
 
 export const QuizPreview = () => {
   const { courseId, quizId } = useParams();
-  // todo: hook this up to the backend
-  const [questions, setQuestions] = useState<Question[]>(questionArray);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
+
+  const findAllQuestionsForQuiz = async () => {
+    const questionInfo = await client.findAllQuestionsForQuiz(quizId ?? '1');
+    setQuestions(questionInfo.questions as Question[]);
+  }
+
+  useEffect(() => {
+    findAllQuestionsForQuiz();
+  }, []);
 
   const getCurrentQuestion = () => {
     if (currQuestionIndex > questions.length || currQuestionIndex < 0) {
@@ -42,7 +50,7 @@ export const QuizPreview = () => {
       <div className="my-3">
         <h5>Questions</h5>
         <ul style={{listStyleType: 'none', cursor: 'pointer'}}>
-          {questions.map((question, index) => {
+          {questions.map((_, index) => {
             return <li onClick={() => {setCurrQuestionIndex(index)}} key={index}><FaInfoCircle /> {`Question ${index + 1}`}</li>
           })}
         </ul>

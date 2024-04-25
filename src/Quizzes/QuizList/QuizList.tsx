@@ -4,30 +4,46 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { quizArray } from "../exampleQuizzes";
 import { Quiz } from "../types";
 import { createAvailabilityText } from "../utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as client from "../client"
 import './index.css';
 
 export const QuizList = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
 
-  // TODO: Change this to use backend
-  // when you change this to use the backend and get all quizzes for a course, you'll need to then take the quizId and get the number of questions from the questions collection
-  const quizzesList: Quiz[] = quizArray.filter((quiz) => quiz.course === courseId);
-  const [quizzes, setQuizzes] = useState<Quiz[]>(quizzesList);
+  // determine if will need to get quizzes' questions/points too
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
-  const togglePublishQuiz = (index: number, publishValue: boolean) => {
-    const newQuizzes = [...quizzes];
-    newQuizzes[index] = {...newQuizzes[index], published: publishValue};
-    setQuizzes(newQuizzes);
-    // todo: connect to backend (can just update the single quiz via id)
+  const findAllQuestionsForQuiz = async () => {
+    const quizList = await client.findQuizzesForCourse(courseId ?? '1');
+    setQuizzes(quizList as Quiz[]);
   }
 
-  const deleteQuiz = (id: string | undefined) => {
-    // backend connect
-    setQuizzes([...quizzes.filter((quiz) => quiz._id !== id)])
+  useEffect(() => {
+    findAllQuestionsForQuiz();
+  }, []);
+
+  const togglePublishQuiz = async (index: number, publishValue: boolean) => {
+    try {
+      const newQuizzes = [...quizzes];
+      const newQuiz = {...newQuizzes[index], published: publishValue};
+      newQuizzes[index] = newQuiz;
+      await client.updateQuiz(newQuiz)
+      setQuizzes(newQuizzes);
+    } catch (error) {
+      alert("could not update quiz")
+    }
   }
 
+  const deleteQuiz = async (id: string | undefined) => {
+    try {
+      await client.deleteQuiz(id ?? "1")
+      setQuizzes([...quizzes.filter((quiz) => quiz._id !== id)])
+    } catch {
+      alert("Error deleting quiz");
+    }
+  }
 
   return (
     <div className='assignments-container'>
@@ -69,7 +85,7 @@ export const QuizList = () => {
                           {quiz.name}
                         </Link>
                         <div>
-                          <span>{`${createAvailabilityText(quiz, numQuestions)}`}</span>
+                          <span>{`${createAvailabilityText(quiz)}`}</span>
                         </div>
                       </div>
                     </div>

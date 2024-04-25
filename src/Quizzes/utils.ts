@@ -1,21 +1,24 @@
 import { FillInBlank, MultipleChoice, Question, Quiz, TrueFalse } from "./types";
 
-export const translateBooleanToStringValue = (bool: boolean) => bool ? "Yes" : "No";
+export const translateBooleanToStringValue = (bool: boolean | undefined) => bool ? "Yes" : "No";
 
 export const createAvailabilityText = (quiz: Quiz) => {
   const currentDate = new Date();
   const { untilDate, availableDate, dueDate, points } = quiz;
+  const convertedUntilDate = new Date(untilDate);
+  const convertedAvailDate = new Date(availableDate);
+  const convertedDueDate = new Date(dueDate);
   let availabilityString;
 
-  if (currentDate > untilDate) {
+  if (currentDate > convertedUntilDate) {
     availabilityString = "Closed";
-  } else if (currentDate < availableDate) {
-    availabilityString = `Not available until ${availableDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`;
+  } else if (currentDate < convertedAvailDate) {
+    availabilityString = `Not available until ${convertedAvailDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})}`;
   } else {
     availabilityString = "Available";
   }
 
-  const dueString = ` | Due ${dueDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})} | ${points} pts | ${quiz.numQuestions} Questions`;
+  const dueString = ` | Due ${convertedDueDate.toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric'})} | ${points} pts | ${quiz.numQuestions} Questions`;
 
   return availabilityString + dueString;
 }
@@ -56,7 +59,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quiz: question.quiz,
         points: question.points,
         question: question.question,
         correctAnswer: mcQuestion.correctAnswer,
@@ -70,7 +73,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quiz: question.quiz,
         points: question.points,
         question: question.question,
         correctAnswer: tfQuestion.correctAnswer,
@@ -83,7 +86,7 @@ export const questionsToJson = (questions: Question[]) => {
       let jsonQuestion = {
         title: question.title,
         type: question.type,
-        quiz: question.quizId,
+        quiz: question.quiz,
         points: question.points,
         question: question.question,
         correctAnswers: fibQuestion.correctAnswers,
