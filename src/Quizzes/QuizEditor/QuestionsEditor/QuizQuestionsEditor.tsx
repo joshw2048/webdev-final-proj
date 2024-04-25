@@ -7,34 +7,7 @@ import { defaultMCAnswers, getFIBChoices, getQuestionType, jsonToQuestions, ques
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-
-// temporary questions before we put stuff in the database
-let mc: MultipleChoice = {
-  title: "Q1",
-  type: "MultipleChoice",
-  quiz: '1',
-  points: 4,
-  question: "What is the capital of France?",
-  correctAnswer: "Paris",
-  possibleAnswers: ["London", "Paris", "Berlin", "Rome"]
-}
-let tf: TrueFalse = {
-  title: "Q2",
-  type: "TrueFalse",
-  quiz: '1',
-  points: 4,
-  question: "The Earth is flat.",
-  correctAnswer: false,
-}
-let fib: FillInBlank = {
-  title: "Q3",
-  type: "FillInBlank",
-  quiz: '1',
-  points: 4,
-  question: "What is the capital of The United States?",
-  correctAnswers: ["DC", "Washington DC", "Washington D.C."],
-}
-const sampleQuestions = [mc, tf, fib];
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -48,6 +21,8 @@ const QuizQuestionsEditor = () => {
   const location = useLocation();
   const pathParts = location.pathname.split('/'); 
   const quizIndex = pathParts.indexOf('Quizzes');
+  const courseIndex = pathParts.indexOf('Courses');
+  const courseId = pathParts[courseIndex + 1];
   const quizId = pathParts[quizIndex + 1];
   let dbQuestions: Question[] = [];
 
@@ -58,13 +33,13 @@ const QuizQuestionsEditor = () => {
       return total + question.points;
     }, 0);
     setTotalPoints(totalPoints);
-    // setQuestions(dbQuestions);
+    setQuestions(dbQuestions);
   };
   useEffect(() => {
     findAllQuestions();
   }, []);
   
-  const [questions, setQuestions] = useState<Question[]>(sampleQuestions);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   const defaultQuestion: MultipleChoice = {
     title: "Q" + (questions.length + 1),
@@ -90,6 +65,9 @@ const QuizQuestionsEditor = () => {
   const [editingPossibleAnswers, setEditingPossibleAnswers] = useState<string[]>([]);
   const [editingCorrectAnswers, setEditingCorrectAnswers] = useState<string[]>([]);
   const [totalPoints, setTotalPoints] = useState(0);
+
+  const navigate = useNavigate();
+
 
   const handleNewQuestion = () => {
     setQuestionType('multiple-choice');
@@ -205,8 +183,9 @@ const QuizQuestionsEditor = () => {
 
   const handleFIBAddOption = () => {
     const newOption = 'New Option';
+    console.log((editingQuestion as FillInBlank).correctAnswers);
     const updatedCorrectAnswers = [...(editingQuestion as FillInBlank).correctAnswers, newOption];
-    const updatedEditingQuestion = { ...(editingQuestion as MultipleChoice), correctAnswers: updatedCorrectAnswers };
+    const updatedEditingQuestion = { ...(editingQuestion as FillInBlank), correctAnswers: updatedCorrectAnswers };
     setEditingQuestion(updatedEditingQuestion);
     setCorrectAnswers(updatedCorrectAnswers);
   };
@@ -238,20 +217,25 @@ const QuizQuestionsEditor = () => {
 
     } else if (type === 'fill-blanks') {
       setCorrectAnswers(["Example 1", "Example 2", "Example 3", "Example 4"]);
+      setEditingQuestion({ ...(editingQuestion as FillInBlank), correctAnswers: ["Example 1", "Example 2", "Example 3", "Example 4"] });
     }
     setQuestionType(e.target.value);
   }
 
-  const handlePublishQuiz = () => {
-    console.log(dbQuestions);
+  const handlePublishQuiz = async () => {
+    handleSaveQuiz(); 
+    const response = await api.put(`${QUIZZES_API}/quizzes/${quizId}/updateQuizPublish`);
   };
 
   const handleSaveQuiz = async () => {
     const jsonQuestions = questionsToJson(questions);
+    console.log(`${QUIZZES_API}/quizzes/${quizId}/questions`);
     const response1 = await api.post(`${QUIZZES_API}/quizzes/${quizId}/questions`, jsonQuestions);
 
-    const jsonDetails = {points: points, numQuestions: questions.length};
-    const response2 = await api.post(`${QUIZZES_API}/quizzes/${quizId}/updatePointsAndNumQuestions`, jsonDetails)
+    const jsonDetails = {points: totalPoints, numQuestions: questions.length};
+    const response2 = await api.put(`${QUIZZES_API}/quizzes/${quizId}/updatePointsAndNumQuestions`, jsonDetails);
+
+    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/edit`);
   };
 
   return (
